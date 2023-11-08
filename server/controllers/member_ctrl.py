@@ -1,11 +1,12 @@
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
-from database.db import dynamodb
+from server.database.db import dynamodb
 from typing import Optional
 
 table = 't_miembros'
 
-def get_member(code: str, tenant_id = 'UTEC') -> Optional[dict]: ##
+
+def get_member(code: str, tenant_id = 'UTEC') -> Optional[dict]:
     try:
         response: dict = dynamodb.get_item(
             TableName=table,

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from typing import Optional
-from controllers.emotion_ctrl import (
+from server.controllers.emotion_ctrl import (
     get_emotion_scores, 
     get_emotion_predominant, 
     get_emotion_names
@@ -8,13 +8,16 @@ from controllers.emotion_ctrl import (
 
 routes_emotion = APIRouter()
 
+
 @routes_emotion.get('/all/scores')
 def get_names() -> Optional[dict]:  
     return get_emotion_scores()
 
+
 @routes_emotion.get('/all/names')
 def get_scores() -> Optional[dict]:  
     return get_emotion_names()
+
 
 @routes_emotion.get('/predominant')
 def get_predominant() -> Optional[dict]:  

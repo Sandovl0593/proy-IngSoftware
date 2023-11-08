@@ -1,4 +1,4 @@
-from database.db import dynamodb
+from server.database.db import dynamodb
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
 from collections import defaultdict
@@ -6,7 +6,8 @@ from typing import Optional
 
 table = 't_registro_emociones'
 
-def get_emotion_logs_member(member_code: str, from_date: str, tenant_id: str ='UTEC') -> Optional[dict]: ##
+
+def get_emotion_logs_member(member_code: str, from_date: str, tenant_id: str = 'UTEC') -> Optional[dict]:
     formatted_from_date = f'{from_date}T00:00:00'
     try:
         response = dynamodb.scan(
@@ -25,7 +26,7 @@ def get_emotion_logs_member(member_code: str, from_date: str, tenant_id: str ='U
         return JSONResponse(content=e.response['Error'], status_code=500)
 
 
-def get_emotion_logs(from_date: str, tenant_id: str ='UTEC') -> Optional[dict]: ##
+def get_emotion_logs(from_date: str, tenant_id: str = 'UTEC') -> Optional[dict]:
     # example: 2023-03-20T08:25:00, from_date: 2023-03-20
     formatted_from_date = f'{from_date}T00:00:00'
     try:
@@ -53,4 +54,4 @@ def get_emotion_member_codes(items: dict) -> dict:
         code: str = item['code']['S']
         emotions[emotion].append(code)
 
-    return dict(emotions) 
+    return dict(emotions)
