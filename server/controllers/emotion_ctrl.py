@@ -37,15 +37,17 @@ def get_emotion_names() -> Optional[dict]: ##
 
 
 def get_emotion_predominant() -> Optional[dict]:  ##
-    from_date: str = datetime(2023, 8, 28).strftime('%Y-%m-%d')
+    from_date: str = datetime(2023, 8, 28).strftime('%Y-%m-%d')#debería ser today -2 
     # end_date: str = datetime.now().strftime('%Y-%m-%d')
 
     try:
         items: dict = get_emotion_logs(from_date)
         emotions: list = [item['emocion']['S'] for item in items]
         emotion_counter: Counter = Counter(emotions)
+        emotion_total_values: len = len(emotions) #
         emotion_predominant: str = emotion_counter.most_common(1)[0][0]
-        return {'content': emotion_predominant}
+        emotion_predominant_percentage: float = round(int(emotion_counter.most_common(1)[0][1]) * 100/emotion_total_values,2)
+        return {'content': (emotion_predominant,emotion_predominant_percentage)}
     
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
