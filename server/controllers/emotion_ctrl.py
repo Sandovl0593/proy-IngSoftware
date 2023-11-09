@@ -1,4 +1,4 @@
-from controllers.emotion_log_ctrl import get_emotion_logs
+from controllers.emotion_log_ctrl import get_emotion_logs, get_emotion_logs_member
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
 from database.db import dynamodb
@@ -47,5 +47,20 @@ def get_emotion_predominant() -> Optional[dict]:  ##
         emotion_predominant: str = emotion_counter.most_common(1)[0][0]
         return {'content': emotion_predominant}
     
+    except ClientError as e:
+        return JSONResponse(content=e.response['Error'], status_code=500)
+
+
+def get_emotion_predominant_member(member_code: str) -> Optional[dict]:  ##
+    from_date: str = datetime(2023, 8, 28).strftime('%Y-%m-%d')
+    # end_date: str = datetime.now().strftime('%Y-%m-%d')
+
+    try:
+        items: dict = get_emotion_logs_member(member_code, from_date)
+        emotions: list = [item['emocion']['S'] for item in items]
+        emotion_counter: Counter = Counter(emotions)
+        emotion_predominant: str = emotion_counter.most_common(1)[0][0]
+        return {'content': emotion_predominant}
+
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
