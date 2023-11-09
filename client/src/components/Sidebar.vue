@@ -1,15 +1,19 @@
 <script>
 import { RouterLink } from 'vue-router';
-import Notification from './Notification.vue';
+import { Teleport } from 'vue';
 
 export default {
     name: "Sidebar",
     data() {
       return {
         collapsed: false,
-        showNotifications: false,
+        showNotifications: true,
         screenWidth: window.innerWidth,
 
+        citasPendientes: ["Margiory", "Marcela", "Milloshy", "Fabiola", "Adrian"],
+        // citasPendientes: []
+
+        // state member register
         userNane: "Usuario",
       };
     },
@@ -26,9 +30,7 @@ export default {
                 this.collapsed = false; // Oculta el sidenav en dispositivos no móviles
             }
         },
-        viewNotifications() {
-          this.showNotifications = !this.showNotifications;
-      }
+        
     },
 
     mounted() {
@@ -37,7 +39,8 @@ export default {
     destroyed() {
         window.removeEventListener("resize", this.onResize);
     },
-    components: { Notification }
+
+    components: { Teleport }
 }
 </script>
 
@@ -75,18 +78,26 @@ export default {
           </router-link>
         </li>
 
-        <li @click="viewNotifications" class="sidenav-nav-item"><div class="sidenav-nav-link">
+        <li @click="showNotifications = true" class="sidenav-nav-item"><div class="sidenav-nav-link">
             <img src="../svg/notification.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
             <span class="sidenav-link-text" v-if="collapsed">Notification</span></div>
         </li>
     </ul>
   </div>
 
-  <Notification v-if="showNotifications" />
+  <!-- Teleport is Vue3 component for modals -->
+  <Teleport to="body">   
+    <div v-if="showNotifications" class="modal window-not">
+      <div class="window-content">
+        <button @click="showNotifications = false" class="close" id="closewindow">&times;</button>
+        <h2>Tienes citas pendientes!!</h2>
+        <ul id="miembrosPendientes">
+          <!-- Aquí se agregaría la data a usar sobre las citas de FeelScan? -->
+          <li v-for="(integer, index) in citasPendientes" :key="index">
+            {{ integer }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </Teleport>
 </template>
-
-
-<style scoped>
-
-
-</style>

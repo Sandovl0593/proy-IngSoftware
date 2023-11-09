@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios'
-
+import { Teleport } from 'vue'
 import Aggent from './Aggent.vue'
 import puntajes from '../utils/puntajes.json'
 
@@ -21,21 +21,27 @@ export default {
       userToCitar: "",
       emailToCitar: "",
 
+      current_date: "",
       mainGrafico: "",
+      circularEmotion: "",
 
-      top_limit: null
+      top_limit: 20,
+
+      // showNotifications: true,
+      // citasPendientes: ["Margiory", "Marcela", "Milloshy", "Fabiola", "Adrian"],
+     
     }
   },
   created() {
-      axios.get('http://127.0.0.1:5000/mainGrafico')
-      .then(res => {
-        this.mainGrafico = res.data;
-      })
-      .catch(error => {
-        console.error('Error al obtener el dato:', error);
-      });
+      // axios.get(`http://127.0.0.1:8000/graphic/main/member_codes/${this.current_date}/${this.circularEmotion}/`)
+      // .then(res => {
+      //   this.mainGrafico = res.data;
+      // })
+      // .catch(error => {
+      //   console.error('Error al obtener el dato:', error);
+      // });
       
-      axios.get(`http://127.0.0.1:5000/api/member/all/top_negative/${top_limit}`)
+      axios.get(`http://127.0.0.1:5000/member/all/top_negative/${this.top_limit}`)
       .then(res => {
         this.puntajeMembers = res.data;
       })
@@ -62,7 +68,7 @@ export default {
   methods: {
     viewAgenda() {
       this.showAgent = !this.showAgent;
-    },
+    },  
 
     getUserRow(index) {
       const infoUser = this.puntajeMembers[index-1]
@@ -108,7 +114,7 @@ export default {
   mounted() {
 
   },
-  components: { Aggent }
+  components: { Aggent, Teleport }
 }
 </script>
 
@@ -202,9 +208,11 @@ export default {
     </div>
 
   </div>
+
 </section>
 
 <Aggent v-if="showAgent" :username="userToCitar" :email="emailToCitar"/>
+
 
 </template>
 

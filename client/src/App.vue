@@ -1,9 +1,9 @@
 <script>
 import { RouterView } from 'vue-router';
 import Sidebar from './components/Sidebar.vue'
-import Notification from './components/Notification.vue'
+// import Notification from './components/Notification  .vue'
 
-export default {
+export default {  
   name: "App",
   computed: {
     viewNav() {
@@ -14,7 +14,7 @@ export default {
       return this.$route.path === '/dashboard' || this.$route.path === '/';
     }
   },
-  components: { Sidebar, Notification }
+  components: { Sidebar }
 }
 
 </script>
@@ -26,7 +26,7 @@ export default {
 
   <router-view />
 
-  <Notification v-if="in_dashboard" />
+  <!-- <Notification v-if="in_dashboard" /> -->
   <!--  -->
 
 </template>
