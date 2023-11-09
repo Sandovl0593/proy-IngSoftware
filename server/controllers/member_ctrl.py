@@ -91,6 +91,26 @@ def get_members_top_negative(limit: int = 20) -> Optional[dict]: ##
         return JSONResponse(content=e.response["Error"], status_code=500)
 
 
+# función para los nombres de los kmiembros (k < n = 20)
+def obtener_miembros_no_atendidos():
+    nombres = []
+    response: dict = dynamodb.scan(
+        TableName=table,
+        ProjectionExpression='nombre, estado',
+        ExpressionAttributeNames={'#estado': 'estado'},
+        ExpressionAttributeValues={':val': {'N': '0'}},
+        FilterExpression='#estado == :val',
+        Limit=20
+    )
+    items = response['Items']
+    for item in items:
+        no_atendido: dict = {
+            'nombre': item.get('nombre', {}).get('S', ''),
+        }
+        nombres.append(no_atendido)
+    return nombres
+
+
 # Auxiliary Functions
 
 

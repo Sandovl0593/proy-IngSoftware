@@ -1,4 +1,5 @@
-from controllers.member_ctrl import get_member, update_member_state_score, get_members_top_negative
+from controllers.member_ctrl import get_member, update_member_state_score, get_members_top_negative, \
+    obtener_miembros_no_atendidos
 from fastapi import APIRouter
 from typing import Optional
 
@@ -15,3 +16,7 @@ def get_top_negative(limit: str) -> Optional[dict]:
 @routes_member.put("/{code}/state/{state}/score")
 def update_state_score(code: str, state: str) -> Optional[dict]:
     return update_member_state_score(code, int(state))
+
+@routes_member.get("/all/kmiembros")
+def get_kmiembros():
+    return obtener_miembros_no_atendidos()
