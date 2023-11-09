@@ -1,12 +1,11 @@
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
-from server.database.db import dynamodb
+from database.db import dynamodb
 from typing import Optional
 
 table = 't_areas'
 
-
-def get_areas(tenant_id: str = 'UTEC') -> Optional[dict]:
+def get_areas(tenant_id: str = 'UTEC') -> Optional[dict]: ##
     areas: list = []
 
     try:
@@ -14,7 +13,7 @@ def get_areas(tenant_id: str = 'UTEC') -> Optional[dict]:
             TableName=table
         )
         for item in response['Items']:
-            if item['tenant_id']['S'] == tenant_id:
+            if(item['tenant_id']['S'] == tenant_id):
                 name: str = item['nombre']['S']
                 areas.append(name)
         print(areas)

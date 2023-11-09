@@ -25,4 +25,4 @@ app.include_router(routes_emotion, prefix="/emotion")
 app.include_router(routes_member, prefix="/member")
 app.include_router(routes_area, prefix="/area")
 
-# create_tables()
+#create_tables()

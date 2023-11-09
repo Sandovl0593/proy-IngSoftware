@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class Member(BaseModel):
     code: str
     name: str

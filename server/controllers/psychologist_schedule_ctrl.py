@@ -1,14 +1,13 @@
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
-from member_ctrl import get_member
-from server.database.db import dynamodb
+from controllers.member_ctrl import get_member
+from database.db import dynamodb
 from typing import Optional
 import ast
 
 table = 't_horario_psicologos'
 
-
-def get_psychologist_schedules_details(tenant_id ='UTEC') -> Optional[dict]:
+def get_psychologist_schedules_details(tenant_id ='UTEC') -> Optional[dict]: ##
     try:
         response: dict = dynamodb.scan(
             TableName=table
