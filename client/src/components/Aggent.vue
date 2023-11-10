@@ -60,18 +60,22 @@
   
 <script>
 import axios from 'axios';
+// import HTML_TEMPLATE from '../utils/messageMail'
+// import SENDMAIL from "../utils/mail" 
 import horariosPsico from '../utils/horariosPsico.json'
 
   export default {
     name: "Aggent",
     props: {
-      "username": String,
-      "email": String,
+      "usernameLog": String,
+      "usernameSend": String,
+      "emailBegin": String,
+      "emailSend": String,
     },
     data() {
       return {
         horariosPsico: {},
-        
+
         emailObej: "",
         date: "",
         message: "",
@@ -89,6 +93,7 @@ import horariosPsico from '../utils/horariosPsico.json'
 
       };
     },
+
     async created() {
       await axios.get('http://127.0.0.1:8000/psychologist_schedule/all/details')
       .then(res => {
@@ -104,21 +109,6 @@ import horariosPsico from '../utils/horariosPsico.json'
     },
 
     methods: {
-
-      sendEmail(userID, serviceID, TemplateID, sendEmail) {
-        emailjs.init(userID);
-        emailjs.send(serviceID, TemplateID, {
-            to_email: sendEmail,
-            message_html: "<p>Este es un correo electrónico con HTML renderizado.</p>"
-        }).then(
-            function(response) {
-                console.log("Correo electrónico enviado con éxito", response);
-            },
-            function(error) {
-                console.log("Error al enviar el correo electrónico", error);
-            }
-        )
-      },
 
       // selecciona un psicologo a citar
       toCheckPsico(psico_email, code) {
@@ -140,12 +130,24 @@ import horariosPsico from '../utils/horariosPsico.json'
       },
 
       // funcion asincrona donde despues de enviar el correo, se confirme en el form
-      async sendAggent() {
+      async sendAggent(e) {
         if (this.date && this.message) {
           // Lógica para enviar el correo
           this.isFormValid = true;
           //implementar la lógica para enviar el correo
 
+          // const options = {
+          //     from:$props.emailBegin, // sender address
+          //     to: $props.emailSend, // receiver email
+          //     subject: "Reunion recomendada por FeelScan", // Subject line
+          //     text: this.message,
+          //     html: HTML_TEMPLATE(this.message),
+          // }
+
+          // SENDMAIL(options, (info) => {
+          //   console.log("Email sent successfully");
+          //   console.log("MESSAGE ID: ", info.messageId);
+          // }
         } else {
           this.isFormValid = false; // El formulario no es válido
         }

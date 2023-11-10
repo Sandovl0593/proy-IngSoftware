@@ -6,8 +6,13 @@ import puntajes from '../utils/puntajes.json'
 
 export default {
   name: "Dashboard",
+  props: {
+    nameReg: String,
+    emailReg: String
+  },
   data() {
     return {
+      // state variables
       puntajeMembers: [],
       
       showAgent: false,
@@ -26,13 +31,11 @@ export default {
       circularEmotion: "",
 
       top_limit: 20,
-
-      // showNotifications: true,
-      // citasPendientes: ["Margiory", "Marcela", "Milloshy", "Fabiola", "Adrian"],
      
     }
   },
-  created() {
+  async created() {
+
       // axios.get(`http://127.0.0.1:8000/graphic/main/member_codes/${this.current_date}/${this.circularEmotion}/`)
       // .then(res => {
       //   this.mainGrafico = res.data;
@@ -41,7 +44,7 @@ export default {
       //   console.error('Error al obtener el dato:', error);
       // });
       
-      axios.get(`http://127.0.0.1:5000/member/all/top_negative/${this.top_limit}`)
+      axios.get(`http://127.0.0.1:8000/member/all/top_negative/${this.top_limit}`)
       .then(res => {
         this.puntajeMembers = res.data;
       })
@@ -50,7 +53,7 @@ export default {
         this.puntajeMembers = JSON.parse(JSON.stringify(puntajes))
       });
 
-      axios.get('http://127.0.0.1:5000/emotion/predominant')
+      axios.get('http://127.0.0.1:8000/emotion/predominant')
       .then(res => {
         this.dominantEmotion = res.data;
       })
@@ -80,25 +83,25 @@ export default {
     // en .then() ocurre si funciona la peticion POST
 
     async tounDoneCheck(index) {
-        if (this.unDoneCheck[index]) {
-          this.meanWhileCheck[index] = false;
-          this.DoneCheck[index] = false;
-        }
-        const codeuser = this.puntajeMembers[index-1].codigo
-        await axios.post(`http://127.0.0.1:8000/member/${codeuser}/state/1/score`)
-        .then(res => this.puntajeMembers[index-1].puntaje -= 20) //
-      },
+      if (this.unDoneCheck[index]) {
+        this.meanWhileCheck[index] = false;
+        this.DoneCheck[index] = false;
+      }
+      const codeuser = this.puntajeMembers[index-1].codigo
+      await axios.post(`http://127.0.0.1:8000/member/${codeuser}/state/1/score`)
+      .then(res => this.puntajeMembers[index-1].puntaje -= 20) //
+    },
+    
+    async toNeanwhileCheck(index) {
+      if (this.meanWhileCheck[index]) {
+        this.unDoneCheck[index] = false;
+        this.DoneCheck[index] = false;
+      }
+      const codeuser = this.puntajeMembers[index-1].codigo
+      await axios.post(`http://127.0.0.1:8000/member/${codeuser}/state/2/score`) //
+      .then(res => this.puntajeMembers[index-1].puntaje -= 50) //
       
-      async toNeanwhileCheck(index) {
-        if (this.meanWhileCheck[index]) {
-          this.unDoneCheck[index] = false;
-          this.DoneCheck[index] = false;
-        }
-        const codeuser = this.puntajeMembers[index-1].codigo
-        await axios.post(`http://127.0.0.1:8000/member/${codeuser}/state/2/score`) //
-        .then(res => this.puntajeMembers[index-1].puntaje -= 50) //
-        
-      },
+    },
 
     async toDoneCheck(index) {
       if (this.DoneCheck[index]) {
@@ -119,6 +122,7 @@ export default {
 </script>
 
 <template>
+
 <section>
   
   <div id="select-emotion-b" class="box-info">
@@ -211,7 +215,8 @@ export default {
 
 </section>
 
-<Aggent v-if="showAgent" :username="userToCitar" :email="emailToCitar"/>
+<Aggent v-if="showAgent" :usernameLog="$props.nameReg" :emailBegin="$props.emailReg" 
+                         :usernameSend="userToCitar" :emailSend="emailToCitar"/>
 
 
 </template>

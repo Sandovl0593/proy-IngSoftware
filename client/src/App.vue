@@ -1,36 +1,23 @@
 <script>
-import { RouterView } from 'vue-router';
-import Sidebar from './components/Sidebar.vue'
-// import Notification from './components/Notification  .vue'
+import ViewLogged from './components/ViewLogged.vue';
+import Login from './components/Login.vue';
 
 export default {  
   name: "App",
   computed: {
-    viewNav() {
-        return this.$route.path !== '/login' && this.$route.path !== '/welcome';
-    },
-
-    in_dashboard() {
-      return this.$route.path === '/dashboard' || this.$route.path === '/';
+    in_login() {
+      return this.$route.path === '/login' || this.$route.path === '/';
     }
   },
-  components: { Sidebar }
+  components: { ViewLogged, Login }
 }
 
 </script>
 
 <template>
  
+  <Login v-if="in_login"/>
 
-  <Sidebar v-if="viewNav"/>
-
-  <router-view />
-
-  <!-- <Notification v-if="in_dashboard" /> -->
-  <!--  -->
+  <ViewLogged v-if="!in_login"/>
 
 </template>
-
-<style scoped>
-
-</style>

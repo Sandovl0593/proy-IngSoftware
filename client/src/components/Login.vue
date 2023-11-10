@@ -13,21 +13,29 @@ export default {
       emailReg: '',
       passwordReg: '',
       confirmReg: '',
+      roleReg : '',
       tipoReg: '',
       emptyFields: false,
     };
   },
+  created() {
+    // Para testeo
+    this.emailReg = "adrian.sandoval@utec.edu.pe"
+    this.nameReg = "Adrian Sandoval Huamaní"
+    this.roleReg = "Administrador"
+  },
+
   methods: {
     doLogin() {
-    if (this.emailLogin === '' || this.passwordLogin === '') {
-      this.emptyFields = true;
-    } else {
-      // Autenticación exitosa, guarda el correo en Local Storage
-      localStorage.setItem('email', this.emailLogin);
-      alert('You are now logged in');
-      this.$router.push('/dashboard');
-    }
-  },
+      if (this.emailLogin === '' || this.passwordLogin === '') {
+        this.emptyFields = true;
+      } else {
+        // Autenticación exitosa, guarda el correo en Local Storage
+        // localStorage.setItem('email', this.emailLogin);
+        // alert('You are now logged in');
+        this.$router.push('/dashboard');
+      }
+    },
     // doRegister() {
     //   if (
     //     this.emailReg === '' ||
@@ -71,7 +79,11 @@ export default {
           <button type="submit" class="button-68" >
           <!-- @click="doLogin"> -->
           
-          <router-link to="/dashboard">Entrar</router-link></button>
+          <!-- <router-link to="/dashboard">Entrar</router-link></button> -->
+          <router-link :to="`/dashboard/${nameReg}/${emailReg}/${roleReg}`">
+            Entrar
+          </router-link>
+          </button>
 
           <!-- <p>¿No tienes una cuenta? <a href="javascript:void(0)" @click="toggleRegister">Crear cuenta</a></p> -->
           <!-- <p><a href="javascript:void(0)">¿Olvidaste tu contraseña?</a></p> -->

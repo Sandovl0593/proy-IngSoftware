@@ -14,24 +14,29 @@ const router = createRouter({
       // meta: {
       //   requiresAuth: true
       // }
-    },{
+    },
+    {
       path: "/welcome",
       name: "welcome",
       component: () => import("../components/Landing.vue"),
-    },{
-      path: "/dashboard",
+    },
+    {
+      path: "/dashboard/:name/:email/:role",
       name: "dashboard",
-      component: () => import("../components/Dashboard.vue"),
-    },{
+      component: () => import("../components/ViewLogged.vue"),
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("../components/Login.vue"),
-    }, {
+    }, 
+    {
       path: "/recommendation",
       name: "recommendation",
       component: () => import("../components/Recommendation.vue"),
-    }, {
-      path: "/profile",
+    }, 
+    {
+      path: "/profile/:name/:email/:role",
       name: "profile",
       component: () => import("../components/Profile.vue"),
     }, 

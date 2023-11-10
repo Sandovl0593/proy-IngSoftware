@@ -4,17 +4,22 @@ import { Teleport } from 'vue';
 
 export default {
     name: "Sidebar",
+    props: [
+      // state log up user
+     "nameReg",
+      "emailReg",
+      "role"
+    ],
     data() {
       return {
+        // state user
+
         collapsed: false,
         showNotifications: false,
         screenWidth: window.innerWidth,
 
         citasPendientes: ["Margiory", "Marcela", "Milloshy", "Fabiola", "Adrian"],
         // citasPendientes: []
-
-        // state member register
-        userNane: "Usuario",
       };
     },
     methods: {
@@ -58,14 +63,15 @@ export default {
     <ul class="sidenav-nav">
       
       <li class="sidenav-nav-item">
-        <router-link class="sidenav-nav-link" to="/profile" exact>
+        <router-link class="sidenav-nav-link" :to="`/profile/${$props.nameReg}/${$props.emailReg}/${$props.role}`" exact>
           <img src="../svg/user.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
           <span class="sidenav-link-text" v-if="collapsed">Profile</span>
         </router-link>
       </li>
 
         <li class="sidenav-nav-item">
-           <router-link class="sidenav-nav-link" to="/dashboard" exact>
+          <!-- si esta en mismo /dashboard, no hacer nada -->
+           <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.nameReg}/${$props.emailReg}/${$props.role}`" exact>
             <img src="../svg/home.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
             <span class="sidenav-link-text" v-if="collapsed">Dashboard</span>
           </router-link>
