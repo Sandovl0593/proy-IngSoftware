@@ -1,40 +1,58 @@
 <script>
-import { RouterLink } from 'vue-router';
+// import { RouterLink } from 'vue-router';
+import axios from 'axios';
 
 export default {
   name: "Login",
   data() {
     return {
-      registerActive: false,
+      // registerActive: false,
       emailLogin: '',
       passwordLogin: '',
+      
+      confirmReg: '',
+
       nameReg: '',
       lastnameReg: '',
       emailReg: '',
       passwordReg: '',
-      confirmReg: '',
       roleReg : '',
       tipoReg: '',
+
+      tokenActive: "",
+      
       emptyFields: false,
     };
   },
   created() {
-    // Para testeo
-    this.emailReg = "adrian.sandoval@utec.edu.pe"
-    this.nameReg = "Adrian Sandoval Huamaní"
-    this.roleReg = "Administrador"
   },
 
   methods: {
-    doLogin() {
+    async doLogin(e) {
       if (this.emailLogin === '' || this.passwordLogin === '') {
         this.emptyFields = true;
       } else {
-        // Autenticación exitosa, guarda el correo en Local Storage
-        // localStorage.setItem('email', this.emailLogin);
-        // alert('You are now logged in');
         
-        this.$router.push('/dashboard');
+        /*
+        await axios.post(
+          "http://127.0.0.1:8000/Nmembers/", 
+          { email: this.emailLogin, password: this.passwordLogin },
+          { 'Content-Type': 'application/json' }
+        ).then(res => {
+          this.emailLogin = res.data.email
+          this.tokenActive = res.data.token
+          
+        }).catch(err => {
+          // Para testeo
+          */
+          this.emailLogin = "adrian.sandoval@utec.edu.pe"
+          this.passwordLogin = 'aaa'
+
+          this.nameReg = "Adrian Sandoval Huamaní"
+          this.roleReg = "Administrador"
+        // })
+        
+        this.$router.push(`/dashboard/${this.nameReg}/${this.emailReg}/${this.roleReg}`);
       }
     },
     // doRegister() {
@@ -70,25 +88,21 @@ export default {
       <div v-if="!registerActive" class="card login" :class="{ 'error': emptyFields }">
         <img src="../svg/feelscan.svg" alt="VitalCheck logo" width="200" height="70" />
         <h1>Iniciar sesión</h1>
-        <div class="form-group">
+
+        <form class="form-group" @submit.prevent="doLogin()">
           <label class="error-message" v-if="emptyFields && emailLogin === ''">Por favor ingresa tu correo</label>
           <input v-model="emailLogin" type="text" class="form-control" placeholder="Correo" required />
+
           <label class="error-message" v-if="emptyFields && passwordLogin === ''">Por favor ingresa tu contraseña</label>
           <input v-model="passwordLogin" type="password" class="form-control" placeholder="Contraseña" required />
 
-          <!-- <button type="submit" class="button-68" @click="doLogin">Entrar</button> -->
-          <router-link :to="`/dashboard/${nameReg}/${emailReg}/${roleReg}`">
           <button type="submit" class="button-68" >
-          <!-- @click="doLogin"> -->
-          
-          <!-- <router-link to="/dashboard">Entrar</router-link></button> -->
             Entrar
           </button>
-        </router-link>
 
           <!-- <p>¿No tienes una cuenta? <a href="javascript:void(0)" @click="toggleRegister">Crear cuenta</a></p> -->
           <!-- <p><a href="javascript:void(0)">¿Olvidaste tu contraseña?</a></p> -->
-        </div>
+        </form>
       </div>
 
       <!-- <div v-if="registerActive" class="card register" :class="{ 'error': emptyFields }">
