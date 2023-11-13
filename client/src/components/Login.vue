@@ -33,6 +33,7 @@ export default {
         // Autenticación exitosa, guarda el correo en Local Storage
         // localStorage.setItem('email', this.emailLogin);
         // alert('You are now logged in');
+        
         this.$router.push('/dashboard');
       }
     },
@@ -76,14 +77,14 @@ export default {
           <input v-model="passwordLogin" type="password" class="form-control" placeholder="Contraseña" required />
 
           <!-- <button type="submit" class="button-68" @click="doLogin">Entrar</button> -->
+          <router-link :to="`/dashboard/${nameReg}/${emailReg}/${roleReg}`">
           <button type="submit" class="button-68" >
           <!-- @click="doLogin"> -->
           
           <!-- <router-link to="/dashboard">Entrar</router-link></button> -->
-          <router-link :to="`/dashboard/${nameReg}/${emailReg}/${roleReg}`">
             Entrar
-          </router-link>
           </button>
+        </router-link>
 
           <!-- <p>¿No tienes una cuenta? <a href="javascript:void(0)" @click="toggleRegister">Crear cuenta</a></p> -->
           <!-- <p><a href="javascript:void(0)">¿Olvidaste tu contraseña?</a></p> -->

@@ -15,7 +15,7 @@ export default {
         notWelcome() { return this.$route.path !== "/welcome" },
         in_dashboard() { return this.$route.path.includes("/dashboard") }
     },
-    components: { Sidebar, Dashboard }
+    components: { Sidebar, Dashboard, RouterView }
     
 }
 </script>

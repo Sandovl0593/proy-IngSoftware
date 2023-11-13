@@ -1,8 +1,10 @@
 <script>
 import axios from 'axios'
 import { Teleport } from 'vue'
+
 import Aggent from './Aggent.vue'
 import puntajes from '../utils/puntajes.json'
+import emotionAreas from '../utils/emotion_areas.json'
 
 export default {
   name: "Dashboard",
@@ -28,7 +30,11 @@ export default {
 
       current_date: "",
       mainGrafico: "",
+      configPie: {},
+
       circularEmotion: "",
+      serieAreas: [],
+      countAreas: [],
 
       top_limit: 20,
      
@@ -36,6 +42,17 @@ export default {
   },
   async created() {
 
+      // Obtener los miembros por puntaje en orden descendente
+      await axios.get(`http://127.0.0.1:8000/member/all/top_negative/${this.top_limit}`)
+      .then(res => {
+        this.puntajeMembers = res.data;
+      })
+      .catch(error => {
+        console.error('Error al obtener el dato:', error);
+        this.puntajeMembers = JSON.parse(JSON.stringify(puntajes)) // por defecto si no esta activa
+      });
+      
+      // Obtener las coordenadas del grafico dependienedo de la emocion y el rango de tiempo
       // axios.get(`http://127.0.0.1:8000/graphic/main/member_codes/${this.current_date}/${this.circularEmotion}/`)
       // .then(res => {
       //   this.mainGrafico = res.data;
@@ -43,17 +60,9 @@ export default {
       // .catch(error => {
       //   console.error('Error al obtener el dato:', error);
       // });
-      
-      axios.get(`http://127.0.0.1:8000/member/all/top_negative/${this.top_limit}`)
-      .then(res => {
-        this.puntajeMembers = res.data;
-      })
-      .catch(error => {
-        console.error('Error al obtener el dato:', error);
-        this.puntajeMembers = JSON.parse(JSON.stringify(puntajes))
-      });
 
-      axios.get('http://127.0.0.1:8000/emotion/predominant')
+      // Obtener la emocin predominante
+      await axios.get('http://127.0.0.1:8000/emotion/predominant')
       .then(res => {
         this.dominantEmotion = res.data;
       })
@@ -61,6 +70,50 @@ export default {
         console.error('Error al obtener el dato:', error);
         this.dominantEmotion = "enojo"   // por defecto si no esta activa
       });
+
+      // Obtener la cantidad de personas con la emcion predominante por area
+      await axios.get('http://127.0.0.1:8000/--')
+      .then(res => {
+        this.circularEmotion = res.data;
+      })
+      .catch(error => {
+        console.error('Error al obtener el dato:', error);
+        this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
+      });
+
+      this.serieAreas = Object.keys(this.circularEmotion);
+      this.countAreas = Object.values(this.circularEmotion);
+
+      this.configPie = { 
+        title: {
+          text: "Porcentaje por área",
+          align: "center",
+        },
+        chart: {
+          width: '400px',
+          height: '400px',
+          zoom: {
+            enabled: true
+          },
+          offsetY: 10
+        },
+        // Cambiar los colores
+        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
+        fill: {
+          type: 'gradient',
+        },
+        labels: this.serieAreas,
+        legend: {
+          show: false
+          // position: 'bottom',
+          // width: '340px',
+          // height: '200px',
+          // fontSize: '10px',
+          // offsetX: 10,
+          // offsetY: 10,
+          // formatter: (series, opts) => [this.serieAreas[opts.seriesIndex]]
+        }
+      };
       
       // carga los estados checks de cada miembro por defecto
       for (let i = 0; i < this.puntajeMembers.length; i++) {
@@ -153,19 +206,19 @@ export default {
       <div><h1>Emocion dominante:</h1></div>
       <div id="get-dom-image">
           <span><em>{{ dominantEmotion }}</em></span>
-          <img :src="`./public/images/` + dominantEmotion + '.jpg'" :alt="dominantEmotion" width="100">
+          <img :src="`/${dominantEmotion}.jpg`" :alt="dominantEmotion" width="100">
       </div>  
     </div>
     
 
     <div id="circular-graph-b" class="box-info">
-      
+      <apexchart type="donut" :options="configPie" :series="countAreas"> </apexchart>
     </div>
     
   </div>
   
 
-  <div id="chart-emotion-area-b" z>
+  <div id="chart-emotion-area-b" class="box-info">
     {{ mainGrafico }}
   </div>
   
@@ -191,9 +244,9 @@ export default {
             <td> {{ row.puntaje }} </td>
             <td id="state-cell">
               <div id="state-check">
-                <input type="checkbox" :class="`check-style n-undone`" v-model="unDoneCheck[index]" @change="tounDoneCheck(index)">
-                <input type="checkbox" :class="`check-style n-meanwhile`" v-model="meanWhileCheck[index]" @change="toNeanwhileCheck(index)">
-                <input type="checkbox" :class="`check-style n-done`" v-model="DoneCheck[index]" @change="toDoneCheck(index)">
+                <input type="checkbox" class="check-style n-undone" v-model="unDoneCheck[index]" @change="tounDoneCheck(index)">
+                <input type="checkbox" class="check-style n-meanwhile" v-model="meanWhileCheck[index]" @change="toNeanwhileCheck(index)">
+                <input type="checkbox" class="check-style n-done" v-model="DoneCheck[index]" @change="toDoneCheck(index)">
               </div>
             </td>
           </tr>
@@ -225,13 +278,10 @@ export default {
 
 #get-dom-image {
   width: 100px;
-  padding-top: 30px;
   height: 70px;
   display: flex;
   align-items: center;
-  vertical-align: middle;
   justify-content: space-around;
-  /* border: 1px solid black; */
 }
 
 #get-dom-image span {

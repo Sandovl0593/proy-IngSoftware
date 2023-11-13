@@ -9,11 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "3.11.0",
+    "apexcharts": "3.44.0",
     "axios": "1.6.0",
     "nodemailer": "6.9.7",
     "vue": "^3.3.4",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-apexcharts": "1.4.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
