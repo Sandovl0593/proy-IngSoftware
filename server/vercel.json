@@ -1,5 +1,5 @@
 {
-    "devCommnand": "uvicorn main:app --reload --env-file='.env'",
+    "buildCommnand": "uvicorn main:app --reload",
     "builds": [
       {
         "src": "main.py",
