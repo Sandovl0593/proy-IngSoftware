@@ -31,10 +31,12 @@ export default {
       current_date: "",
       mainGrafico: "",
       configPie: {},
+      configLine: {},
 
       circularEmotion: "",
       serieAreas: [],
       countAreas: [],
+      countData: [],
 
       top_limit: 20,
      
@@ -61,7 +63,7 @@ export default {
       //   console.error('Error al obtener el dato:', error);
       // });
 
-      // Obtener la emocin predominante
+      // Obtener la emocion predominante
       await axios.get('http://127.0.0.1:8000/emotion/predominant')
       .then(res => {
         this.dominantEmotion = res.data;
@@ -71,7 +73,7 @@ export default {
         this.dominantEmotion = "enojo"   // por defecto si no esta activa
       });
 
-      // Obtener la cantidad de personas con la emcion predominante por area
+      // Obtener la cantidad de personas con la emocion predominante por area
       await axios.get('http://127.0.0.1:8000/--')
       .then(res => {
         this.circularEmotion = res.data;
@@ -81,8 +83,10 @@ export default {
         this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       });
 
+
       this.serieAreas = Object.keys(this.circularEmotion);
       this.countAreas = Object.values(this.circularEmotion);
+      this.countData = Object.keys(this.dominantEmotion);
 
       this.configPie = { 
         title: {
@@ -98,7 +102,7 @@ export default {
           offsetY: 10
         },
         // Cambiar los colores
-        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
+        colors: ['#BED346', '#E5D74C', '#E4B43D'],
         fill: {
           type: 'gradient',
         },
@@ -112,6 +116,30 @@ export default {
           // offsetX: 10,
           // offsetY: 10,
           // formatter: (series, opts) => [this.serieAreas[opts.seriesIndex]]
+        }
+      };
+
+      this.configLine = { 
+        title: {
+          text: "Visualización de Data por rango seleccionado",
+          align: "center",
+        },
+        chart: {
+          width: '400px',
+          height: '400px',
+          zoom: {
+            enabled: true
+          },
+          offsetY: 10
+        },
+        // Cambiar los colores
+        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
+        fill: {
+          type: 'gradient',
+        },
+        labels: this.serieData,
+        legend: {
+          show: true
         }
       };
       
@@ -219,7 +247,7 @@ export default {
   
 
   <div id="chart-emotion-area-b" class="box-info">
-    {{ mainGrafico }}
+    <apexchart type="line" :options="configLine" :series="countData"></apexchart>
   </div>
   
   <div id="feature-emotion-trend-b" class="box-info">
@@ -313,7 +341,7 @@ export default {
 } 
 
 .n-done:checked { 
-    accent-color: green; 
+    accent-color: #2BAF6B; 
 } 
 
 </style>
