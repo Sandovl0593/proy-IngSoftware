@@ -10,7 +10,8 @@ dynamodb: Any = client('dynamodb',
          aws_secret_access_key=getenv("AWS_SECRET_ACCESS_KEY"),
         #  aws_session_token=getenv("aws_session_token"),
          aws_session_token=getenv("AWS_SESSION_TOKEN"),
-         region_name=getenv("aws_region_name"))
+        #  region_name=getenv("aws_region_name"))
+         region_name=getenv("AWS_REGION_NAME"))
 
 def create_tables() -> None:
     try:
