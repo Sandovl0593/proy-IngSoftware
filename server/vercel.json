@@ -1,5 +1,5 @@
 {
-    "buildCommnand": "uvicorn main:app --reload",
+    "buildComnand": "uvicorn main:app --reload",
     "builds": [
       {
         "src": "main.py",
