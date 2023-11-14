@@ -32,7 +32,7 @@ a realizar en base a las estadísticas de las emociones de los miembros en una i
 
 |    1    |    2    |    3    |    4    |    5    |    6    |    7    |   8   |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-**Full-Stack**|**Back-end**|**Full-Stack**|**Front-end**|**Full-stack**|**Front-end**|**Front-end**|**Back-end**|
+**Back-end**|**Back-end**|**Front-end**|**Front-end**|**Back-end**|**Front-end**|**Front-end**|**Back-end**|
 |Marcela <br>Espinoza <br>Herrera|Kelvin<br>Cahuana<br>Condori|Adrian<br>Sandoval<br>Huamaní|Margiory<br>Alvarado<br>Chávez|Milloshy <br>Crisóstomo<br>Rodríguez|Fabián<br> Alvarado <br> Vargas|Fabiola<br>Guardamino<br>Morales|José <br>Osnayo <br> Matos
 
 </div>
@@ -85,7 +85,7 @@ npm run dev
 
 ## Views
 
-- **`/dashboard`**: Contiene el reporte de las emociones predominantes en un periodo específico, gráficos estadísiticos de las emociones por área resumidas y el listado de las personas por prioridad de recibir recomendaciones.
+- **`/dashboard`**: Contiene el reporte de las emociones predominantes en un periodo específico, gráficos estadísticos de las emociones por área resumidas y el listado de las personas por prioridad de recibir recomendaciones.
 
 - **`/recommendation`**: 
 
