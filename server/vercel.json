@@ -1,0 +1,15 @@
+{
+    "devCommnand": "uvicorn main:app --reload --env-file='.env'",
+    "builds": [
+      {
+        "src": "main.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "main.py"
+      }
+    ]
+  }

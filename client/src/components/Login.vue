@@ -52,7 +52,7 @@ export default {
           this.roleReg = "Administrador"
         // })
         
-        this.$router.push(`/dashboard/${this.nameReg}/${this.emailReg}/${this.roleReg}`);
+        this.$router.push(`/dashboard/${this.nameReg}/${this.emailLogin}/${this.roleReg}`);
       }
     },
     // doRegister() {
