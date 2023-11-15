@@ -6,8 +6,16 @@ import Aggent from './Aggent.vue'
 import puntajes from '../utils/puntajes.json'
 import emotionAreas from '../utils/emotion_areas.json'
 
+//Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones
+import { BModal, BFormInput, BFormGroup } from 'bootstrap-vue';
+
 export default {
   name: "Dashboard",
+  components:{
+    'b-modal': BModal,
+    'b-form-input': BFormInput,
+    'b-form-group': BFormGroup,
+  },
   props: {
     nameReg: String,
     emailReg: String
@@ -37,6 +45,14 @@ export default {
       serieAreas: [],
       countAreas: [],
       countData: [],
+      selectOption: null,
+      selectedTime: '1w',
+      timeOptions: [
+        {text: '1 hora', value: '1h'},
+        {text: '1 día', value: '1d'},
+        {text: '1 semana', value: '1w'},
+        {text: '1 mes', value: '1m'},
+      ],
 
       top_limit: 20,
      
@@ -82,6 +98,8 @@ export default {
         console.error('Error al obtener el dato:', error);
         this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       });
+
+      await this.fetchData();
 
 
       this.serieAreas = Object.keys(this.circularEmotion);
@@ -139,7 +157,7 @@ export default {
         },
         labels: this.serieData,
         legend: {
-          show: true
+          show: false
         }
       };
       
@@ -158,6 +176,76 @@ export default {
       const infoUser = this.puntajeMembers[index-1]
       this.userToCitar = infoUser.nombre
       this.emailToCitar = infoUser.correo
+    },
+
+    async fetchData(){
+      try{
+        const res = await axios.get('http://127.0.0.1:8000/emotion/predominant');
+        this.dominantEmotion = res.data;
+        this.countData = Object.keys(this.dominantEmotion);
+        this.updateChart();
+      }
+      catch (error){
+        console.error('Error al obtener el dato:', error);
+        this.dominantEmotion = {default: 1};
+        this.countData = Object.keys(this.dominantEmotion);
+        this.updateChart();
+      }
+    },
+
+    async selectOption(option){
+      this.selectOption = option;
+
+      if(option == 'timeRank'){
+        this.$refs.timeModal.show();
+        const selectedTime = await this.selectTime();
+        this.fetchDataForTime(selectedTime);}
+        else{
+          this.fetchData();
+        }
+      },
+
+      handleTimeSelection(){
+        this.$refs.timeModal.hide();
+        this.fetchDataForTime(this.selectedTime);
+      },
+
+      async fetchDataForTime(selectedTime){
+        try {
+          const res = await axios.get(`http://127.0.0.1:8000/emotion/time?range=${selectedTime}`);
+          this.dominantEmotion = res.data;
+          this.countData = Object.keys(this.dominantEmotion);
+          this.updateChart();
+    } 
+    catch (error) {
+      console.error('Error al obtener el dato para el rango de tiempo:', error);
+    }
+  },
+
+  updateChart() {
+      this.configLine = {
+        title: {
+          text: "Visualización de Data mediante Gráfico Lineal",
+          align: "center",
+        },
+        chart: {
+          width: '400px',
+          height: '400px',
+          zoom: {
+            enabled: true
+          },
+          offsetY: 10
+        },
+        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
+        fill: {
+          type: 'gradient',
+        },
+        labels: this.serieData,
+        legend: {
+          show: true
+        }
+      };
+    },
     },
 
     // funciones asincronas sibre actualizar el puntaje
@@ -193,13 +281,9 @@ export default {
       await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/3/score`) //
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     },
-  },
-
-  mounted() {
-
-  },
+  };
   components: { Aggent, Teleport }
-}
+
 </script>
 
 <template>
@@ -244,10 +328,24 @@ export default {
     </div>
     
   </div>
-  
 
-  <div id="chart-emotion-area-b" class="box-info">
-    <apexchart type="line" :options="configLine" :series="countData"></apexchart>
+  <div>
+    <div class = "buttons">
+      <button @click="selectOption('emotion')">Emoción</button>
+      <button @click="selectOption('area')">Área</button>
+      <button @click="selectOption('timeRank')">Rango de Tiempo</button>
+    </div>
+
+    <div id="chart-emotion-area-b" class="box-info">
+      <apexchart type="line" :options="configLine" :series="countData"></apexchart>
+    </div>
+  
+    <b-modal ref="timeModal" title="Seleccione el intervalo de tiempo" @ok="handleTimeSelection">
+      <b-form-group label="Rango de Tiempo">
+        <b-form-select v-model="selectedTime" :options="timeOptions"></b-form-select>
+      </b-form-group>
+    </b-modal>
+
   </div>
   
   <div id="feature-emotion-trend-b" class="box-info">
@@ -342,6 +440,12 @@ export default {
 
 .n-done:checked { 
     accent-color: #2BAF6B; 
-} 
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
 
 </style>
