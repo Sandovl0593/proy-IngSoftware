@@ -10,16 +10,18 @@ table = 't_emociones'
 
 def get_emotion_scores(tenant_id: str ='UTEC') -> Optional[dict]: ##
     try:
+
         response: dict = dynamodb.scan(
-            TableName=table
+            TableName=table,
+            FilterExpression='tenant_id = :tenant_id',
+            ExpressionAttributeValues={':tenant_id': {'S': tenant_id}}
         )
 
         emotions: dict = {}
         for item in response['Items']:
-            if(item['tenant_id']['S'] == tenant_id):
-                name: str = item['nombre']['S']
-                score: int = int(item['valor']['N'])
-                emotions[name] = score
+            name: str = item['nombre']['S']
+            score: int = int(item['valor']['N'])
+            emotions[name] = score
         
         return emotions   
     except ClientError as e:
@@ -31,7 +33,6 @@ def get_emotion_names() -> Optional[dict]: ##
         data_emotions = get_emotion_scores()
         emotions = list(data_emotions.keys())
         return {'content': emotions}
-
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
 
