@@ -46,7 +46,7 @@ def get_emotion_predominant() -> Optional[dict]:  ##
         emotions: list = [item['emocion']['S'] for item in items]
         emotion_counter: Counter = Counter(emotions)
         emotion_predominant: str = emotion_counter.most_common(1)[0][0]
-        return {'content': emotion_predominant}
+        return {'content': (emotion_predominant,round(emotion_counter.most_common(1)[0][1]*100/len(emotions),2))}
     
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
