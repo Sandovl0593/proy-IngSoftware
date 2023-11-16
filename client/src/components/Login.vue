@@ -1,5 +1,4 @@
 <script>
-// import { RouterLink } from 'vue-router';
 import axios from 'axios';
 
 export default {
@@ -10,16 +9,10 @@ export default {
       emailLogin: '',
       passwordLogin: '',
       
-      confirmReg: '',
-
       nameReg: '',
-      lastnameReg: '',
       emailReg: '',
-      passwordReg: '',
       roleReg : '',
-      tipoReg: '',
-
-      tokenActive: "",
+      tenant_id: '',
       
       emptyFields: false,
     };
@@ -28,54 +21,38 @@ export default {
   },
 
   methods: {
-    async doLogin(e) {
+    async doLogin() {
       if (this.emailLogin === '' || this.passwordLogin === '') {
         this.emptyFields = true;
       } else {
         
+        //// peticion post para info de los datos
+        //// del correo retorna la id, tenant_id, nombre y rol
+        //// y verificando el password
+
         /*
         await axios.post(
           "http://127.0.0.1:8000/Nmembers/", 
           { email: this.emailLogin, password: this.passwordLogin },
           { 'Content-Type': 'application/json' }
-        ).then(res => {
+          ).then(res => {
+          this.nameReg  = res.data.name;
           this.emailLogin = res.data.email
-          this.tokenActive = res.data.token
+          this.roleReg = res.data.rol,
           
         }).catch(err => {
           // Para testeo
           */
-          this.emailLogin = "adrian.sandoval@utec.edu.pe"
-          this.passwordLogin = 'aaa'
-
-          this.nameReg = "Adrian Sandoval Huamaní"
-          this.roleReg = "Administrador"
+         // this.passwordLogin = 'aaa'
+         
+         this.nameReg = "Adrian Sandoval Huamaní"
+         this.roleReg = "Psicologo"
+         this.tenant_id = "UTEC"
         // })
         
-        this.$router.push(`/dashboard/${this.nameReg}/${this.emailLogin}/${this.roleReg}`);
+        this.$router.push(`/dashboard/${this.tenant_id}/${this.nameReg}/${this.emailLogin}/${this.roleReg}`);
       }
     },
-    // doRegister() {
-    //   if (
-    //     this.emailReg === '' ||
-    //     this.nameReg === '' ||
-    //     this.lastnameReg === '' ||
-    //     this.passwordReg === '' ||
-    //     this.confirmReg === '' ||
-    //     this.tipoReg === ''
-    //   ) {
-    //     this.emptyFields = true;
-    //   } else {
-    //   // Registro exitoso, guarda el correo en Local Storage
-    //   localStorage.setItem('email', this.emailReg);
-    //   alert('You are now registered');
-    //   this.$router.push('/dashboard');
-    // }
-    // },
-    // toggleRegister() {
-    //   this.registerActive = !this.registerActive;
-    //   this.emptyFields = false;
-    // },
   },
 }
 </script>
@@ -104,27 +81,6 @@ export default {
           <!-- <p><a href="javascript:void(0)">¿Olvidaste tu contraseña?</a></p> -->
         </form>
       </div>
-
-      <!-- <div v-if="registerActive" class="card register" :class="{ 'error': emptyFields }">
-        <img src="../svg/feelscan.svg" alt="VitalCheck logo" width="200" height="70" />
-        <h1>Registrarse</h1>
-        <div class="form-group">
-          <label class="error-message" v-if="emptyFields && nameReg === ''">Por favor ingresa tu nombre</label>
-          <input v-model="nameReg" type="text" class="form-control" placeholder="Nombre" required />
-          <label class="error-message" v-if="emptyFields && lastnameReg === ''">Por favor ingresa tu apellido</label>
-          <input v-model="lastnameReg" type="text" class="form-control" placeholder="Apellido" required />
-          <label class="error-message" v-if="emptyFields && emailReg === ''">Por favor ingresa tu correo</label>
-          <input v-model="emailReg" type="email" class="form-control" placeholder="Correo" required />
-          <label class="error-message" v-if="emptyFields && passwordReg === ''">Por favor ingresa tu contraseña</label>
-          <input v-model="passwordReg" type="password" class="form-control" placeholder="Contraseña" required />
-          <label class="error-message" v-if="emptyFields && confirmReg === ''">Por favor confirma tu contraseña</label>
-          <input v-model="confirmReg" type="password" class="form-control" placeholder="Confirmar Contraseña" required />
-          <br /> -->
-          <!-- <button type="submit" class="button-68" @click="doRegister">Registrar</button>
-          <button type="submit" class="button-68"> <RouterLink to="/dashboard"> Registrar </RouterLink></button>
-          <p>¿Ya tienes una cuenta? <a href="javascript:void(0)" @click="toggleRegister">Iniciar sesión</a></p>
-        </div> -->
-      <!-- </div> -->
     </div>
   </div>
 

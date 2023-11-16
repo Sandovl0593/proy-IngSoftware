@@ -15,6 +15,9 @@ section {
   height: 220%;
 }
 
+
+/* sidenavs */
+
 .sidenav {
   background-color: var(--color-feelscan-2);
   transition: all .5s ease;
@@ -26,6 +29,17 @@ section {
   box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
 }
 
+.sidenav-left {
+  background-color: var(--color-feelscan-2);
+  transition: all .5s ease;
+  position: fixed;
+  margin-left: 44.7%;
+  z-index: 1;
+  top: 0;
+  width: calc(var(--lateral-navbar-width)*0.2);
+  height: 100%;
+  box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+}
 
 /* /////////////// */
 /* Select emotion */

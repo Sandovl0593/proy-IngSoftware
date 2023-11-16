@@ -4,17 +4,18 @@ import { Teleport } from 'vue';
 
 export default {
     name: "Sidebar",
-    props: [
+    props: {
       // state log up user
-     "nameReg",
-      "emailReg",
-      "role"
-    ],
+     "nameReg": String,
+      "emailReg": String,
+      "role": String
+    },
     data() {
       return {
         // state user
 
         collapsed: false,
+
         showNotifications: false,
         screenWidth: window.innerWidth,
 
@@ -29,6 +30,7 @@ export default {
         closeSidenav() {
             this.collapsed = false;
         },
+        
         onResize(event) {
             this.screenWidth = window.innerWidth;
             if (this.screenWidth > 768) {
@@ -61,14 +63,6 @@ export default {
     </div>
 
     <ul class="sidenav-nav">
-      
-      <li class="sidenav-nav-item">
-        <router-link class="sidenav-nav-link" :to="`/profile/${$props.nameReg}/${$props.emailReg}/${$props.role}`" exact>
-          <img src="../svg/user.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
-          <span class="sidenav-link-text" v-if="collapsed">Profile</span>
-        </router-link>
-      </li>
-
         <li class="sidenav-nav-item">
           <!-- si esta en mismo /dashboard, no hacer nada -->
            <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.nameReg}/${$props.emailReg}/${$props.role}`" exact>
