@@ -6,15 +6,16 @@ export default {
   data() {
     return {
       // registerActive: false,
-      emailLogin: '',
+      code: '',
       passwordLogin: '',
       
-      nameReg: '',
-      emailReg: '',
+      // nameReg: '',
+      // emailReg: '',
       roleReg : '',
       tenant_id: '',
       
       emptyFields: false,
+      messageError: ""
     };
   },
   created() {
@@ -22,7 +23,7 @@ export default {
 
   methods: {
     async doLogin() {
-      if (this.emailLogin === '' || this.passwordLogin === '') {
+      if (this.code === '' || this.passwordLogin === '') {
         this.emptyFields = true;
       } else {
         
@@ -30,30 +31,22 @@ export default {
         //// del correo retorna la id, tenant_id, nombre y rol
         //// y verificando el password
 
-        /*
-        await axios.post(
-          "http://127.0.0.1:8000/Nmembers/", 
-          { email: this.emailLogin, password: this.passwordLogin },
-          { 'Content-Type': 'application/json' }
-          ).then(res => {
-          this.nameReg  = res.data.name;
-          this.emailLogin = res.data.email
-          this.roleReg = res.data.rol,
-          
-        }).catch(err => {
-          // Para testeo
-          */
-         // this.passwordLogin = 'aaa'
-         
-         this.nameReg = "Adrian Sandoval Huamaní"
-         this.roleReg = "Psicologo"
-         this.tenant_id = "UTEC"
-        // })
         
-        this.$router.push(`/dashboard/${this.tenant_id}/${this.nameReg}/${this.emailLogin}/${this.roleReg}`);
-      }
-    },
-  },
+        await axios.get(
+          `http://127.0.0.1:8000/user/${this.code}/${this.passwordLogin}`, 
+          ).then(res => {
+            
+            this.tenant_id = res.data.tenant_id
+            this.roleReg = res.data.rol
+            this.$router.push(`/dashboard/${this.tenant_id}/${this.code}/${this.roleReg}`);
+            
+          }).catch(err => {
+            this.messageError = err.response.data.error
+          })
+
+        }
+    }
+  }
 }
 </script>
 
@@ -67,12 +60,13 @@ export default {
         <h1>Iniciar sesión</h1>
 
         <form class="form-group" @submit.prevent="doLogin()">
-          <label class="error-message" v-if="emptyFields && emailLogin === ''">Por favor ingresa tu correo</label>
-          <input v-model="emailLogin" type="text" class="form-control" placeholder="Correo" required />
+          <label class="error-message" v-if="emptyFields && code === ''">Por favor ingresa tu código</label>
+          <input v-model="code" type="text" class="form-control" placeholder="Código" required />
 
           <label class="error-message" v-if="emptyFields && passwordLogin === ''">Por favor ingresa tu contraseña</label>
           <input v-model="passwordLogin" type="password" class="form-control" placeholder="Contraseña" required />
 
+          <label class="error-message" v-if="messageError"> {{ messageError }}</label>
           <button type="submit" class="button-68" >
             Entrar
           </button>

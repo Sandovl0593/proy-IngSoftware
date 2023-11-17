@@ -6,9 +6,9 @@ export default {
     name: "Sidebar",
     props: {
       // state log up user
-     "nameReg": String,
-      "emailReg": String,
-      "role": String
+      tenant_id: String,
+      code: String,
+      role: String
     },
     data() {
       return {
@@ -65,7 +65,7 @@ export default {
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item">
           <!-- si esta en mismo /dashboard, no hacer nada -->
-           <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.nameReg}/${$props.emailReg}/${$props.role}`" exact>
+           <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.tenant_id}/${$props.code}/${$props.role}`" exact>
             <img src="../svg/home.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
             <span class="sidenav-link-text" v-if="collapsed">Dashboard</span>
           </router-link>
