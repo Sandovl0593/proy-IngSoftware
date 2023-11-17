@@ -22,4 +22,48 @@ def get_configuracion(tenant_id = 'UTEC')-> Optional[dict]:
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
 
+def update_configuracion(tipo: str, new_value: int, tenant_id = 'UTEC') -> Optional[dict]:
+    try:
+        if(tipo == 'list'):
+            dynamodb.update_item(
+                TableName=table,
+                Key={
+                    'tenant_id': {'S': tenant_id}, 
+                },
+                UpdateExpression='SET lista = :val1',
+                ExpressionAttributeValues={
+                    ':val1': {'N': str(new_value)},
+                }
+            )
+
+        elif(tipo == 'face_graphic'):
+            dynamodb.update_item(
+                TableName=table,
+                Key={
+                    'tenant_id': {'S': tenant_id}, 
+                },
+                UpdateExpression='SET face_graphic = :val1',
+                ExpressionAttributeValues={
+                    ':val1': {'N': str(new_value)},
+                }
+            )  
+        elif(tipo == 'main_graphic'):
+            dynamodb.update_item(
+                TableName=table,
+                Key={
+                    'tenant_id': {'S': tenant_id}, 
+                },
+                UpdateExpression='SET main_graphic = :val1',
+                ExpressionAttributeValues={
+                    ':val1': {'N': str(new_value)},
+                }
+            )
+        else:  
+            return { 'mensaje': f'Configuración no encontrada'}       
+
+        return {
+            'mensaje': f'Configuración actualiza para {tipo}. Nuevo valor: {new_value})'
+        }
+    except ClientError as e:
+        return JSONResponse(content=e.response["Error"], status_code=500)    
 

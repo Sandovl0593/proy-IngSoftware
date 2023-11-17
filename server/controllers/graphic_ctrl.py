@@ -1,13 +1,82 @@
-from controllers.emotion_log_ctrl import get_emotion_logs, get_emotion_member_codes,get_emotion_logs_range
-from controllers.member_ctrl import get_member
-from controllers.emotion_ctrl import get_emotion_predominant 
-from controllers.area_ctrl import get_areas
 from botocore.exceptions import ClientError
 from fastapi.responses import JSONResponse
 from datetime import datetime, timedelta
 from typing import Optional
+from database.db import dynamodb
 import json
 
+table = 't_graficos'
+
+
+#Obtener la ultima fecha t_registro_emociones 
+def get_last_date(tenant_id: str ='UTEC'):
+    try:
+        query_expression = (
+            "tenant_id = :tenant_id"
+        )
+
+        expression_attribute_values = {':tenant_id': {'S': tenant_id}}
+
+        response = dynamodb.query(
+            TableName=table,
+            KeyConditionExpression=query_expression,
+            ExpressionAttributeValues=expression_attribute_values,
+            ScanIndexForward=False, 
+            Limit=1 
+        )
+
+        if 'Items' in response and len(response['Items']) > 0:
+            return {'content': response['Items'][0]['fechaThora_emocion_area']['S']}
+        else:
+            return JSONResponse(content={"error": "No hay elementos para este tenant_id"}, status_code=404)
+
+    except ClientError as e:
+        return JSONResponse(content=e.response['Error'], status_code=500)        
+
+def get_data_main_graphic(dias: int = 1, emocion: str ='tristeza', area: str ='Bienestar Estudiantil', tenant_id: str ='UTEC')-> Optional[dict]:
+    try:
+        #Obtener la fecha 
+        ultimaFecha = get_last_date(tenant_id)['content'].split('T')[0]
+
+        fecha_limite = datetime.strptime(ultimaFecha[:19], "%Y-%m-%d")
+        fecha_limite -= timedelta(days=dias)
+
+        fecha_limite_str = fecha_limite.strftime("%Y-%m-%dT%H:%M:%S")
+
+        #Prueba
+        fechaLimite = str(fecha_limite_str) + '-alivio-Administracion y Finanzas' 
+
+        # Expresión de condición
+        condition_expression = "tenant_id = :tenant_id AND fechaThora_emocion_area > :fechaLimite"
+
+        # Atributos de expresión
+        expression_attribute_values = {
+            ':tenant_id': {'S': tenant_id},
+            ':fechaLimite': {'S': fechaLimite}
+        }
+
+        # Realizar la consulta
+        response = dynamodb.query(
+            TableName=table,
+            KeyConditionExpression=condition_expression,
+            ExpressionAttributeValues=expression_attribute_values
+        )
+
+        valores = {}
+        for item in response['Items']:
+            fechaThora_emocion_area: str = item['fechaThora_emocion_area']['S']
+            fechaThora = fechaThora_emocion_area[:19]
+            temp = fechaThora_emocion_area.split('-')
+            if(temp[3] == emocion and temp[4] == area): 
+                count = int(item['count']['N'])
+                valores[fechaThora] : int = count
+
+        return {'content': valores}
+    except ClientError as e:
+        return JSONResponse(content=e.response['Error'], status_code=500)
+
+
+''' 
 def get_values_main_graphic(from_date: datetime = datetime(2023, 8, 20), tenant_id: str = 'UTEC') -> Optional[dict]:
     try:
         timestamp_list: list = get_x_main_graphic(from_date)
@@ -93,4 +162,4 @@ def get_x_main_graphic(from_date: datetime = datetime(2023, 8, 20, 0,0,0)) -> li
             timestamp_list.append(current_date.strftime('%Y-%m-%dT%H:%M:%S'))
         current_date += timedelta(hours=3)
     return timestamp_list
-#cont_emotionpred_area("2023-08-22",2)
+#cont_emotionpred_area("2023-08-22",2)'''
