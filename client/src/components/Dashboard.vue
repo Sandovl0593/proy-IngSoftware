@@ -47,7 +47,33 @@ export default {
           id: "line-chart",
         },
         xaxis: {
-          categories: [], // lista para guardar los días que ponga
+          categories: ["Administracion y Finanzas",
+    "Administracion y negocios digitales",
+    "Asuntos Internacionales",
+    "Biblioteca",
+    "Bienestar Estudiantil",
+    "Bioingenieria",
+    "Ciencia de datos",
+    "Ciencia de la computacion",
+    "Ciencias",
+    "Comunicacion y Relaciones Publicas",
+    "Humanidades",
+    "Ingenieria ambiental",
+    "Ingenieria civil",
+    "Ingenieria de la energia",
+    "Ingenieria electronica",
+    "Ingenieria industrial",
+    "Ingenieria mecanica",
+    "Ingenieria mecatronica",
+    "Ingenieria quimica",
+    "Investigacion y Desarrollo",
+    "Legal y Cumplimiento",
+    "Mantenimiento y Operaciones",
+    "Recursos Humanos",
+    "Seguridad y Vigilancia",
+    "Servicios Estudiantiles",
+    "Servicios de Salud",
+    "Tecnologia de la Informacion (TI)"], //
         },
       },
       chartData: [
@@ -184,9 +210,7 @@ export default {
       } catch (error) {
         console.error('Error al obtener la lista de miembros no atendidos:', error);
       }
-    },
-
-    
+    }, 
 
   
 
@@ -195,7 +219,7 @@ export default {
         axios
         .get(url)
         .then((response) => {
-          const newData = response.data; // Ajusta esto según el formato real de tus datos
+          const newData = response.data;
           this.chartOptions.xaxis.area = newData.dates;
           this.chartData[0].data = newData.values;
         })
