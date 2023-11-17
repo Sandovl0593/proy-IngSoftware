@@ -1,57 +1,3 @@
-<script>
-import { RouterLink } from 'vue-router';
-import { Teleport } from 'vue';
-
-export default {
-    name: "Sidebar",
-    props: {
-      // state log up user
-      tenant_id: String,
-      code: String,
-      role: String
-    },
-    data() {
-      return {
-        // state user
-
-        collapsed: false,
-
-        showNotifications: false,
-        screenWidth: window.innerWidth,
-
-        citasPendientes: ["Margiory", "Marcela", "Milloshy", "Fabiola", "Adrian"],
-        // citasPendientes: []
-      };
-    },
-    methods: {
-        toggleCollapse() {
-            this.collapsed = !this.collapsed;
-        },
-        closeSidenav() {
-            this.collapsed = false;
-        },
-        
-        onResize(event) {
-            this.screenWidth = window.innerWidth;
-            if (this.screenWidth > 768) {
-                this.collapsed = false; // Oculta el sidenav en dispositivos no móviles
-            }
-        },
-        
-    },
-
-    mounted() {
-        window.addEventListener("resize", this.onResize);
-    },
-    destroyed() {
-        window.removeEventListener("resize", this.onResize);
-    },
-
-    components: { Teleport }
-}
-</script>
-
-
 <template>
   <div :class="['sidenav', collapsed ? 'sidenav-collapsed' : '']">
     <div class="logo-container">
@@ -63,41 +9,107 @@ export default {
     </div>
 
     <ul class="sidenav-nav">
-        <li class="sidenav-nav-item">
-          <!-- si esta en mismo /dashboard, no hacer nada -->
-           <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.tenant_id}/${$props.code}/${$props.role}`" exact>
-            <img src="../svg/home.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
-            <span class="sidenav-link-text" v-if="collapsed">Dashboard</span>
-          </router-link>
-        </li>
-  
-        <li class="sidenav-nav-item">
-          <router-link class="sidenav-nav-link" to="/recommendation" exact>
-            <img src="../svg/recommendation.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
-            <span class="sidenav-link-text" v-if="collapsed">Recommendation</span>
-          </router-link>
-        </li>
+      <li class="sidenav-nav-item">
+        <router-link class="sidenav-nav-link" :to="`/dashboard/${$props.tenant_id}/${$props.code}/${$props.role}`" exact>
+          <img src="../svg/home.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
+          <span class="sidenav-link-text" v-if="collapsed">Dashboard</span>
+        </router-link>
+      </li>
 
-        <li @click="showNotifications = true" class="sidenav-nav-item"><div class="sidenav-nav-link">
-            <img src="../svg/notification.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
-            <span class="sidenav-link-text" v-if="collapsed">Notification</span></div>
-        </li>
+      <li class="sidenav-nav-item">
+        <router-link class="sidenav-nav-link" to="/recommendation" exact>
+          <img src="../svg/recommendation.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
+          <span class="sidenav-link-text" v-if="collapsed">Recommendation</span>
+        </router-link>
+      </li>
+
+      <li @click="showNotifications = true" class="sidenav-nav-item">
+        <div class="sidenav-nav-link">
+          <img src="../svg/notification.svg" type="image/svg+xml" loading="lazy" class="sidenav-link-icon" />
+          <span class="sidenav-link-text" v-if="collapsed">Notification</span>
+        </div>
+      </li>
     </ul>
   </div>
 
   <!-- Teleport is Vue3 component for modals -->
-  <Teleport to="body">   
+  <Teleport to="body">
     <div v-if="showNotifications" class="modal window-not">
       <div class="window-content">
         <button @click="showNotifications = false" class="close" id="closewindow">&times;</button>
-        <h2>Tienes citas pendientes!!</h2>
-        <ul id="miembrosPendientes">
-          <!-- Aquí se agregaría la data a usar sobre las citas de FeelScan? -->
-          <li v-for="(integer, index) in citasPendientes" :key="index">
-            {{ integer }}
+        <h2>Miembros no atendidos</h2>
+        <ul id="miembrosNoAtendidos">
+          <li v-for="(miembro, index) in miembrosNoAtendidos" :key="index">
+            {{ miembro }}
           </li>
         </ul>
       </div>
     </div>
   </Teleport>
 </template>
+
+<script>
+import { ref, onMounted } from 'vue';
+
+export default {
+  name: "Sidebar",
+  props: {
+    tenant_id: String,
+    code: String,
+    role: String
+  },
+  setup(props) {
+    const miembrosNoAtendidos = ref([]);
+
+    const obtenerMiembrosNoAtendidos = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/obtener_miembros_no_atendidos/${props.tenant_id}`);
+        const data = await response.json();
+
+        miembrosNoAtendidos.value = data.content;
+      } catch (error) {
+        console.error('Error al obtener miembros no atendidos:', error);
+      }
+    };
+
+    onMounted(() => {
+      obtenerMiembrosNoAtendidos();
+    });
+
+    const collapsed = ref(false);
+    const showNotifications = ref(false);
+    const screenWidth = ref(window.innerWidth);
+
+    const toggleCollapse = () => {
+      collapsed.value = !collapsed.value;
+    };
+
+    const closeSidenav = () => {
+      collapsed.value = false;
+    };
+
+    const onResize = () => {
+      screenWidth.value = window.innerWidth;
+      if (screenWidth.value > 768) {
+        collapsed.value = false;
+      }
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return {
+      miembrosNoAtendidos,
+      toggleCollapse,
+      closeSidenav,
+      onResize,
+      collapsed,
+      showNotifications,
+      screenWidth
+    };
+  }
+};
+</script>
+
+<style scoped>
+/* Tu estilo existente aquí... */
+</style>
