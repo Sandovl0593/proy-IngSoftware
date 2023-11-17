@@ -4,10 +4,12 @@ export default {
     name: "SideUser",
     props: {
      // state log up user
-     "nameReg": String,
-      "emailReg": String,
-      "role": String
+      code: String,
+      nameReg: String,
+      role: String,
+      emailReg: String
     },
+    
     data() {
       return {
 
@@ -40,7 +42,8 @@ export default {
         </button>
 
         <div id="box-user-info" v-if="collapsed_user">
-          <div>{{ $props.nameReg }}</div>
+          <div>{{ $props.code }}</div>
+          <!-- <div>{{ $props.nameReg }}</div> -->
           <div>{{ $props.emailReg }}</div>
           <div>{{ $props.role }}</div>
         </div>

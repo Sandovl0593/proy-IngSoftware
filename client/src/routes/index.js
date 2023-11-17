@@ -18,7 +18,7 @@ const router = createRouter({
       component: () => import("../components/Landing.vue"),
     },
     {
-      path: "/dashboard/:tid/:name/:email/:role",
+      path: "/dashboard/:tid/:code/:role",
       name: "dashboard",
       component: () => import("../components/ViewLogged.vue"),
     },

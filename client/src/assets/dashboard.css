@@ -112,11 +112,13 @@ select {
   margin-bottom: 35px;
   display: flex;
   align-items: center;
-  text-align: center;
-  justify-content: center;
-  vertical-align: middle;
+  flex-direction: column;
+  padding: 20px;
 }
 
+#chart-info {
+  overflow: hidden;
+}
 
 
 /* /////////////// */
