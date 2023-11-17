@@ -82,7 +82,7 @@ def get_data_main_graphic(dias: int = 1, emocion: str ='tristeza', area: str ='B
 def get_data_face_graphic(tenant_id = 'UTEC'):
     try:
         #Obtener emocion predominante
-        emocion = get_emotion_predominant()['content'][0] #FALTA agregar tenant_id
+        emocion = get_emotion_predominant(tenant_id)['content'][0] #FALTA agregar tenant_id
         #Obtener dias predeterminados
         dias =  int(get_configuracion(tenant_id)['content']['face_graphic'])
         #Obtener la fecha 

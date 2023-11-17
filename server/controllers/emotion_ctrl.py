@@ -37,7 +37,7 @@ def get_emotion_names(tenant_id = 'UTEC') -> Optional[dict]: #falta tenant
         return JSONResponse(content=e.response['Error'], status_code=500)
 
 
-def get_emotion_predominant() -> Optional[dict]:  ##
+def get_emotion_predominant(tenant_id: str = 'UTEC') -> Optional[dict]:  ##
     from_date: str = datetime(2023, 8, 28).strftime('%Y-%m-%d')
     # end_date: str = datetime.now().strftime('%Y-%m-%d')
 
