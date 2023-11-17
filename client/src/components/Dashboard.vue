@@ -282,7 +282,7 @@ export default {
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     },
   };
-  components: { Aggent, Teleport }
+  components: { Aggent, Teleport, BModal, BFormInput, BFormGroup }
 
 </script>
 
