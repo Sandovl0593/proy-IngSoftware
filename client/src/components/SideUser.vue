@@ -43,15 +43,21 @@ export default {
 
         <div id="box-user-info" v-if="collapsed_user">
           <div>{{ $props.code }}</div>
-          <!-- <div>{{ $props.nameReg }}</div> -->
+          <div>{{ $props.nameReg }}</div>
           <div>{{ $props.emailReg }}</div>
           <div>{{ $props.role }}</div>
         </div>
 
+        
         <button class="btn-close" v-if="collapsed_user && screenWidth <= 768" @click="closeSidenavUser()">
           <i class="fal fa-times close-icon"></i>
         </button>
       </div>
+
+      <div id="configuracion-info" v-if="collapsed_user">
+        <div>Configuración general</div>
+      </div>
+      
     </div>
   </div>
 </template>

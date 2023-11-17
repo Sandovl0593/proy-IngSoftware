@@ -48,7 +48,7 @@ export default {
     <router-view v-if="!in_dashboard"/>
 
     <SideUser v-if="notWelcome" :nameReg="nameReg" 
-                               :code="code" :role="role" :email="emailReg"/>
+                               :code="code" :role="role" :emailReg="emailReg"/>
 
 
 </template>

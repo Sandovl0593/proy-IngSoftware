@@ -87,7 +87,7 @@ select {
     margin-bottom: 35px;
     border: 0.1px solid orange;
     margin-right: 5em;
-    width: 50em;
+    width: 46em;
     height: 30em;
     display: flex;
     align-items: center;
@@ -96,7 +96,7 @@ select {
   
   #circular-graph-b {
     border: 0.1px solid orange;
-    width: 30em;
+    width: 34em;
     height: 30em;
     border-radius: 10px;
     margin-bottom: 35px;

@@ -57,6 +57,11 @@
     padding-bottom: 10px;
   }
 
+
+  #configuracion-info {
+    padding-right: 40px;
+  }
+
   .logo-container {
     display: flex;
     align-items: center;
