@@ -44,6 +44,7 @@ export default {
       countData: [],
       selectedOption: null,
       showtimeModal: false,
+      miembrosNoAtendidos: [],
       
       // config main - psicologo
       selectedTime: '1w',
@@ -67,6 +68,7 @@ export default {
       });
     }
 
+    this.obtenerMiembrosNoAtendidos();
       //// peticion post que retorne la configuracion
       //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
 
@@ -132,18 +134,34 @@ export default {
     },
 
     async getDominantEmotion() {
-      await axios.get('http://127.0.0.1:8000/emotion/predominant')
-      .then(res => {
-        this.dominantEmotion = res.data.content[0];
-        this.countData = Object.keys(this.dominantEmotion);
-        
-      })
-      .catch(error => {
-        console.error('Error al obtener el dato:', error);
-        this.dominantEmotion = "enojo"   // por defecto si no esta activa
-      });
+      try {
+    const response = await axios.get('http://127.0.0.1:8000/emotion/predominant');
+    const responseData = response.data.content; // Obtenemos la lista de [emoción, porcentaje]
+    
+    if (responseData && responseData.length === 2) {
+      const [emotion, percentage] = responseData;
+      this.dominantEmotion = [emotion, percentage];
+      this.countData = [emotion]; // Actualizamos countData solo con el nombre de la emoción
+    } else {
+      // Manejo de errores si la respuesta no tiene el formato esperado
+      console.error('La respuesta del servidor no tiene el formato esperado.');
+    }
+  } catch (error) {
+    console.error('Error al obtener el dato:', error);
+    this.dominantEmotion = ["enojo", 0]; // Valores predeterminados si hay un error
+    this.countData = ["enojo"];
+  }
 
-      this.updateChart();
+  this.updateChart();
+    },
+
+    async obtenerMiembrosNoAtendidos() {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/obtener_miembros_no_atendidos');
+        this.miembrosNoAtendidos = response.data; // Actualiza la variable con la lista recibida del servidor
+      } catch (error) {
+        console.error('Error al obtener la lista de miembros no atendidos:', error);
+      }
     },
 
     async selectOption(option){
@@ -281,11 +299,14 @@ export default {
   <div id="section-emotion">
 
     <div id="dominant-emotion-b" class="box-info">
-      <div><h1>Emocion dominante:</h1></div>
+      <div>
+        <h1>Emoción dominante:</h1>
+        <p>Porcentaje: {{ dominantEmotion[1] }}%</p>
+      </div>
       <div id="get-dom-image">
-          <span><em>{{ dominantEmotion }}</em></span>
-          <img :src="`/${dominantEmotion}.jpg`" :alt="dominantEmotion" width="100">
-      </div>  
+        <span><em>{{ dominantEmotion[0] }}</em></span>
+        <img :src="`/${dominantEmotion[0]}.jpg`" :alt="dominantEmotion[0]" width="150">
+      </div>
     </div>
     
 
@@ -295,6 +316,15 @@ export default {
     
   </div>
 
+ <div id="miembros-no-atendidos-b" class="box-info">
+      <h3 style="color: black;">Miembros no atendidos</h3>
+      <ul>
+        <li v-for="(miembro, index) in miembrosNoAtendidos" :key="index">
+          {{ miembro.nombre }}
+        </li>
+      </ul>
+    </div>
+  
   <div id="chart-emotion-area-b" class="box-info">
     <div class = "chart-buttons">
       <button @click="selectOption('emotion')">Emoción</button>
@@ -367,6 +397,7 @@ export default {
       </div>
 
     </div>
+    
 
   </div>
 
@@ -380,18 +411,26 @@ export default {
 </template>
 
 <style scoped>
-
 #get-dom-image {
-  width: 100px;
+  width: 500px;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  background: transparent;
+}
+
+#dominant-emotion-b img {
+  margin-top: 20px; 
+  width: 500px;
+  height: auto; 
 }
 
 #get-dom-image span {
   padding-right: 30px;
   font-size: 20px;
+  background: transparent;
+  margin-top: 50px; 
 }
 
 #state-check {
@@ -400,7 +439,6 @@ export default {
 
 #state-cell {
   display: flex;
-  /* align-items: center; */
   width: 80%;
 }
 
@@ -481,5 +519,34 @@ export default {
 .chart-buttons button:hover {
  opacity: 2.9;
 }
+
+#miembros-no-atendidos-b {
+  border-radius: 10px;
+  box-shadow: 2px 3px 3px 0 black;
+  background-color: var(--color-feelscan-4);
+  border: 0.1px solid orange;
+  margin-bottom: 35px;
+  padding: 20px;
+}
+
+#miembros-no-atendidos-b h3 {
+  color: var(--color-feelscan-2);
+  margin-bottom: 15px;
+}
+
+#miembros-no-atendidos-b ul {
+  list-style: none;
+  padding: 0;
+}
+
+#miembros-no-atendidos-b li {
+  margin-bottom: 10px;
+  color: #555; /* Color medio plomo */
+}
+
+
+
+
+
 
 </style>
