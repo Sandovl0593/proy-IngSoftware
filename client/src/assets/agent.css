@@ -43,7 +43,6 @@
 .form-group {
   position: relative;
   margin-bottom: 15px;
-  margin-right: 20px;
 }
 
 .form-group-table {
@@ -74,7 +73,6 @@
 
 .btn {
   position: relative;
-  padding: 10px 20px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
@@ -89,7 +87,7 @@
   color: white;
   font-size: 20px;
   font-weight: 700;
-  padding: 10px;
+  padding: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -123,7 +121,7 @@
 }
 
 .psychologists-button {
-  margin-top: 20px;
+  margin-top: 10px;
   display: inline-block;
   background-color: #007bff;
   color: white;

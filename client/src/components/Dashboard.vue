@@ -18,7 +18,8 @@ export default {
   },
   props: {
     nameReg: String,
-    emailReg: String
+    emailReg: String,
+    tid: String
   },
   data() {
     return {
@@ -59,6 +60,10 @@ export default {
     }
   },
   async created() {
+
+      //// peticion post que retorne la configuracion y obtener tenant_id
+      //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
+
 
       // Obtener los miembros por puntaje en orden descendente
       await axios.get(`http://127.0.0.1:8000/member/all/top_negative/${this.top_limit}`)
@@ -127,13 +132,6 @@ export default {
         labels: this.serieAreas,
         legend: {
           show: false
-          // position: 'bottom',
-          // width: '340px',
-          // height: '200px',
-          // fontSize: '10px',
-          // offsetX: 10,
-          // offsetY: 10,
-          // formatter: (series, opts) => [this.serieAreas[opts.seriesIndex]]
         }
       };
 

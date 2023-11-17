@@ -11,6 +11,10 @@
   .sidenav-collapsed {
     width: 16.5625rem;
   }
+
+  .sidenav-collapsed-left {
+    width: 20.78rem;
+  }
   
   .sidenav-nav-item {
     width: 100%;
@@ -45,6 +49,14 @@
     color: #000;
   }
 
+  #box-user-info {
+    padding: 20px;
+    flex-direction: column;
+  }
+  #box-user-info div {
+    padding-bottom: 10px;
+  }
+
   .logo-container {
     display: flex;
     align-items: center;
@@ -65,6 +77,23 @@
     border: none;
   }
   
+  .logo-user {
+    border-radius: 0.313rem;
+    background: var(--color-feelscan-2);
+    width: 3.4rem;
+    height: 3.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+
+  .logo-user:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
   .logo img{
     width: 3rem;
     min-width: 3rem;
