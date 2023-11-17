@@ -43,9 +43,10 @@ export default {
       countAreas: [],
       countData: [],
       selectedOption: null,
-      selectedTime: '1w',
       showtimeModal: false,
-
+      
+      // config main - psicologo
+      selectedTime: '1w',
       top_limit: 20,
      
     };
@@ -157,9 +158,9 @@ export default {
         this.showtimeModal = false;
       },
 
-      handleTimeSelection(){
+      async handleTimeSelection(){
         this.showtimeModal = false;
-        this.fetchDataForTime(this.selectedTime);
+        await this.fetchDataForTime(this.selectedTime);
       },
 
       async fetchDataForTime(selectedTime){
@@ -293,32 +294,35 @@ export default {
     
   </div>
 
-  <div>
-    <div class = "buttons">
+  <div id="chart-emotion-area-b" class="box-info">
+    <div class = "chart-buttons">
       <button @click="selectOption('emotion')">Emoción</button>
       <button @click="selectOption('area')">Área</button>
       <button @click="selectOption('timeRank')">Rango de Tiempo</button>
     </div>
 
-    <div id="chart-emotion-area-b" class="box-info">
+    <div id="chart-info">
       <apexchart type="line" :options="configLine" :series="countData"></apexchart>
     </div>
     
 <!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
 
-    <div class="timeModal" v-show="showtimeModal">
-      <div class="modal-content">
-        <span class="close" @click="closetimeModal">&times;</span>
-        <label for="timeSelect">Rango de Tiempo:</label>
-        <select id="timeSelect" v-model="selectedtime">
-          <option value="1h">1 hora</option>
-          <option value="1w">1 semana</option>
-          <option value="2w">2 semanas</option>
-          <option value="1m">1 mes</option>
-        </select>
-        <button @click="handleTimeSelection">Aceptar</button>
+    <Teleport to="#chart-emotion-area-b">
+      <div class="timeModal" v-show="showtimeModal">
+        <div class="modal-content">
+          <span class="close" @click="closetimeModal">&times;</span>
+          <label for="timeSelect">Rango de Tiempo:</label>
+          <select id="timeSelect" v-model="selectedtime">
+            <option value="1h">1 hora</option>
+            <option value="1w">1 semana</option>
+            <option value="2w">2 semanas</option>
+            <option value="1m">1 mes</option>
+          </select>
+          <button @click="handleTimeSelection">Aceptar</button>
+        </div>
       </div>
-    </div>
+    </Teleport>
+
   </div>
   
   <div id="feature-emotion-trend-b" class="box-info" v-if="viewEmotionPsico">
@@ -366,6 +370,7 @@ export default {
   </div>
 
 </section>
+
 
 <Aggent v-if="showAgent" :usernameLog="$props.nameReg" :emailBegin="$props.emailReg" 
                          :usernameSend="userToCitar" :emailSend="emailToCitar"/>
@@ -415,13 +420,13 @@ export default {
     accent-color: #2BAF6B; 
 }
 
-.buttons{
+.chart-buttons{
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
 }
 
-.modal {
+/* .modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -431,11 +436,12 @@ export default {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-}
+} */
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
+  z-index: 99;
   border: 1px solid #888;
   width: 80%;
   border-radius: 10px;
@@ -462,22 +468,17 @@ export default {
   border: 1px solid #ccc;
 }
 
-button {
+.chart-buttons button {
   padding: 8px;
-  background-color: #4CAF50;
+  background-color: #377c39;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #45a049;
+.chart-buttons button:hover {
+ opacity: 0.9;
 }
 
-#chart-emotion-area-b {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-}
 </style>
