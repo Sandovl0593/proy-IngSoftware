@@ -85,7 +85,7 @@ def get_members_top_negative(tenant_id = 'UTEC') -> Optional[dict]: ##
 
         response: dict = dynamodb.scan(
             TableName=table,
-            ProjectionExpression='code, nombre, area, puntaje, correo',
+            ProjectionExpression='code, nombre, area, puntaje, correo, estado',
             ExpressionAttributeNames={'#puntaje': 'puntaje', '#org': 'tenant_id'},
             ExpressionAttributeValues={':val1': {'N': '0'}, ':val2': {'S': tenant_id}},
             FilterExpression='(#puntaje >= :val1) AND (#org = :val2)'
@@ -95,9 +95,7 @@ def get_members_top_negative(tenant_id = 'UTEC') -> Optional[dict]: ##
             key=lambda x: int(x['puntaje']['N']), 
             reverse=True
         )[:limit]
-        
         for item in items:
-            print(item)
             codigo = item.get('code', {}).get('S', '')
             emocion_predominante = get_emotion_predominant_member(codigo)
             member: dict = {
@@ -106,6 +104,7 @@ def get_members_top_negative(tenant_id = 'UTEC') -> Optional[dict]: ##
                 'area': item.get('area', {}).get('S', ''),
                 'puntaje': int(item.get('puntaje', {}).get('N', '0')),
                 'correo': item.get('correo', {}).get('S', ''),
+                'estado': int(item.get('estado', {}).get('N', '0')),
                 'emocion_predominante': emocion_predominante['content']
             }
             members.append(member)
@@ -116,20 +115,16 @@ def get_members_top_negative(tenant_id = 'UTEC') -> Optional[dict]: ##
 
 # función para los nombres de los kmiembros (k < n = 20)
 def obtener_miembros_no_atendidos(tenant_id='UTEC'):
-    nombres = []
-    tabla = dynamodb.Table(table)
-    res = tabla.query(
-        ProjectionExpression='nombre, estado',
-        FilterExpression=(Key('estado').eq(0) & Key('tenant_id').eq(tenant_id)),
-        Limit=20
-    )
-    items = res['Items']
-    for item in items:
-        no_atendido: dict = {
-            'nombre': item.get('nombre', {}).get('S', ''),
-        }
-        nombres.append(no_atendido)
-    return nombres
+    try:
+        nombres = []
+        #Obtener la lista de los N miembros q
+        miembros = get_members_top_negative(tenant_id)['content']
+        for miembro in miembros:
+            if(miembro['estado'] == 0): nombres.append(miembro['nombre'])
+        return {'content': nombres} 
+
+    except ClientError as e:
+        return JSONResponse(content=e.response["Error"], status_code=500)
 
 
 # modificar el estado (check = true, x = false)
