@@ -50,12 +50,33 @@ export default {
       typeTochange: "",
       changed: "",
 
-      toplimit: 0,
+      top_limit: 20,
       rangeMainGraphic: 0,
       rangeFaceInfo: 0,
 
-      exists_tenantId: true
-     
+      exists_tenantId: true,
+      
+      chartOptions: {
+        chart: {
+          id: "line-chart",
+        },
+        xaxis: {
+          categories: [], // lista para guardar los días que ponga
+        },
+      },
+      chartData: [
+        {
+          name: "Emotion/Area Data",
+          data: [],
+        },
+      ],
+      emotion: "defaultEmotion",
+      area: "defaultArea",
+      days: 7, // Por default será una semana
+  
+    
+    miembrosNoAtendidos: [],
+           
     };
   },
   async created() {
@@ -84,6 +105,21 @@ export default {
     // Obtener la emocion predominante
       this.getDominantEmotion();
       
+
+    this.obtenerMiembrosNoAtendidos();
+
+      //// peticion post que retorne la configuracion
+      //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
+
+      // Obtiene la lista de emociones que maneja nuestra data :p
+      await this.get('http://127.0.0.1:8000/emotion/all/names')
+      .then(res => {
+        this.emotionNames = res.data.content;
+      })
+      .catch(error => {
+        console.error('Error al obtener el dato:', error);
+      });
+
       // Obtener la cantidad de personas con la emocion predominante por area
       axios.get(`http://127.0.0.1:8000/graphic/face-graphic?tenant_id=${this.$props.tid}`)
       .then(res => {
@@ -175,60 +211,42 @@ export default {
         });
     },
 
-    async selectOption(option){
-      this.selectedOption = option;
+    
 
-      if(option == 'timeRank')
-        this.showtimeModal = true;
-      else
-          this.getDominantEmotion();
+  
+
+    fetchData(){
+        const url = `http://127.0.0.1:8000/graphic/${this.emocion}/${this.area}/${this.dias}`;
+        axios
+        .get(url)
+        .then((response) => {
+          const newData = response.data; // Ajusta esto según el formato real de tus datos
+          this.chartOptions.xaxis.area = newData.dates;
+          this.chartData[0].data = newData.values;
+        })
+
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+
     },
 
-      closetimeModal(){
-        this.showtimeModal = false;
-      },
-
-      async handleTimeSelection(){
-        this.showtimeModal = false;
-        await this.fetchDataForTime(this.selectedTime);
-      },
-
-      async fetchDataForTime(selectedTime){
-        try {
-          const res = await axios.get(`http://127.0.0.1:8000/emotion/time?range=${selectedTime}`);
-          this.dominantEmotion = res.data;
-          this.countData = Object.keys(this.dominantEmotion);
-          this.updateChart();
-        } 
-        catch (error) {
-          console.error('Error al obtener el dato para el rango de tiempo:', error);
-        }
-      },
-
-    updateChart() {
-      this.configLine = {
-        title: {
-          text: "Visualización de Data mediante Gráfico Lineal",
-          align: "center",
-        },
-        chart: {
-          width: '400px',
-          height: '400px',
-          zoom: {
-            enabled: true
-          },
-          offsetY: 10
-        },
-        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
-        fill: {
-          type: 'gradient',
-        },
-        labels: this.serieData,
-        legend: {
-          show: true
-        }
-      };
+    changeEmotion(newEmotion){
+      this.emocion = newEmotion;
+      this.fetchData();
     },
+
+    changeArea(newArea){
+      this.area = newArea;
+      this.fetchData();
+    },
+
+    changeTime(newTime){
+      this.dias = newDays;
+      this.fetchData();
+    },
+
+
 
     // funciones asincronas sibre actualizar el puntaje
     // en .then() ocurre si funciona la peticion PUT
@@ -275,6 +293,9 @@ export default {
       await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/3/score`) //
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     }
+  },
+  mounted(){
+    this.fetchData();
   },
   components: { Aggent, Teleport }
 }
@@ -326,13 +347,13 @@ export default {
 
   <div id="chart-emotion-area-b" class="box-info">
     <div class = "chart-buttons">
-      <button @click="selectOption('emotion')">Emoción</button>
-      <button @click="selectOption('area')">Área</button>
-      <button @click="selectOption('timeRank')">Rango de Tiempo</button>
+      <button @click="selectOption('emotion')">Felicidad</button>
+      <button @click="selectOption('area')">Ciencias</button>
+      <button @click="selectOption('timeRank')">1 semana</button>
     </div>
 
     <div id="chart-info">
-      <apexchart type="line" :options="configLine" :series="countData"></apexchart>
+      <apexchart type="line" :options="chartOptions" :series="chartData"></apexchart>
     </div>
     
 <!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
@@ -465,7 +486,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0.5);
+  background-color: #fefefe;
 }
 
 .modal-content {
@@ -511,5 +532,34 @@ export default {
 .chart-buttons button:hover {
  opacity: 2.9;
 }
+
+#miembros-no-atendidos-b {
+  border-radius: 10px;
+  box-shadow: 2px 3px 3px 0 black;
+  background-color: var(--color-feelscan-4);
+  border: 0.1px solid orange;
+  margin-bottom: 35px;
+  padding: 20px;
+}
+
+#miembros-no-atendidos-b h3 {
+  color: var(--color-feelscan-2);
+  margin-bottom: 15px;
+}
+
+#miembros-no-atendidos-b ul {
+  list-style: none;
+  padding: 0;
+}
+
+#miembros-no-atendidos-b li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+
+
+
+
 
 </style>
