@@ -8,6 +8,7 @@ import emotionAreas from '../utils/emotion_areas.json'
 
 export default {
   name: "Dashboard",
+
   props: {
     nameReg: String,
     emailReg: String,
@@ -41,10 +42,13 @@ export default {
       serieAreas: [],
       countAreas: [],
       countData: [],
+      selectedOption: null,
+      selectedTime: '1w',
+      showtimeModal: false,
 
       top_limit: 20,
      
-    }
+    };
   },
   async created() {
 
@@ -96,10 +100,12 @@ export default {
         this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       });
 
+      await this.fetchData();
+
 
       this.serieAreas = Object.keys(this.circularEmotion);
       this.countAreas = Object.values(this.circularEmotion);
-      this.countData = Object.keys(this.dominantEmotion);
+      this.countData = Object.values(this.dominantEmotion);
 
       this.configPie = { 
         title: {
@@ -124,30 +130,6 @@ export default {
           show: false
         }
       };
-
-      this.configLine = { 
-        title: {
-          text: "Visualización de Data por rango seleccionado",
-          align: "center",
-        },
-        chart: {
-          width: '400px',
-          height: '400px',
-          zoom: {
-            enabled: true
-          },
-          offsetY: 10
-        },
-        // Cambiar los colores
-        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
-        fill: {
-          type: 'gradient',
-        },
-        labels: this.serieData,
-        legend: {
-          show: true
-        }
-      };
       
       // carga los estados checks de cada miembro por defecto
       for (let i = 0; i < this.puntajeMembers.length; i++) {
@@ -164,6 +146,76 @@ export default {
       const infoUser = this.puntajeMembers[index-1]
       this.userToCitar = infoUser.nombre
       this.emailToCitar = infoUser.correo
+    },
+
+    async fetchData(){
+      try{
+        const res = await axios.get('http://127.0.0.1:8000/emotion/predominant');
+        this.dominantEmotion = res.data;
+        this.countData = Object.keys(this.dominantEmotion);
+        this.updateChart();
+      }
+      catch (error){
+        console.error('Error al obtener el dato:', error);
+        this.dominantEmotion = {default: 1};
+        this.countData = Object.keys(this.dominantEmotion);
+        this.updateChart();
+      }
+    },
+
+    selectOption(option){
+      this.selectedOption = option;
+
+      if(option == 'timeRank'){
+        this.showtimeModal = true;}
+        else{this.fetchData();}
+        }
+      },
+
+      closetimeModal(){
+        this.showtimeModal = false;
+      },
+
+      handleTimeSelection(){
+        this.showtimeModal = false;
+        this.fetchDataForTime(this.selectedTime);
+      },
+
+      async fetchDataForTime(selectedTime){
+        try {
+          const res = await axios.get(`http://127.0.0.1:8000/emotion/time?range=${selectedTime}`);
+          this.dominantEmotion = res.data;
+          this.countData = Object.keys(this.dominantEmotion);
+          this.updateChart();
+    } 
+    catch (error) {
+      console.error('Error al obtener el dato para el rango de tiempo:', error);
+    }
+  },
+
+  updateChart() {
+      this.configLine = {
+        title: {
+          text: "Visualización de Data mediante Gráfico Lineal",
+          align: "center",
+        },
+        chart: {
+          width: '400px',
+          height: '400px',
+          zoom: {
+            enabled: true
+          },
+          offsetY: 10
+        },
+        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
+        fill: {
+          type: 'gradient',
+        },
+        labels: this.serieData,
+        legend: {
+          show: true
+        }
+      };
     },
 
     // funciones asincronas sibre actualizar el puntaje
@@ -211,13 +263,9 @@ export default {
       await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/3/score`) //
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     },
-  },
-
-  mounted() {
-
-  },
+  };
   components: { Aggent, Teleport }
-}
+
 </script>
 
 <template>
@@ -262,10 +310,33 @@ export default {
     </div>
     
   </div>
-  
 
-  <div id="chart-emotion-area-b" class="box-info">
-    <apexchart type="line" :options="configLine" :series="countData"></apexchart>
+  <div>
+    <div class = "buttons">
+      <button @click="selectOption('emotion')">Emoción</button>
+      <button @click="selectOption('area')">Área</button>
+      <button @click="selectOption('timeRank')">Rango de Tiempo</button>
+    </div>
+
+    <div id="chart-emotion-area-b" class="box-info">
+      <apexchart type="line" :options="configLine" :series="countData"></apexchart>
+    </div>
+    
+<!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
+
+    <div class="timeModal" v-show="showtimeModal">
+      <div class="modal-content">
+        <span class="close" @click="closetimeModal">&times;</span>
+        <label for="timeSelect">Rango de Tiempo:</label>
+        <select id="timeSelect" v-model="selectedtime">
+          <option value="1h">1 hora</option>
+          <option value="1w">1 semana</option>
+          <option value="2w">2 semanas</option>
+          <option value="1m">1 mes</option>
+        </select>
+        <button @click="handleTimeSelection">Aceptar</button>
+      </div>
+    </div>
   </div>
   
   <div id="feature-emotion-trend-b" class="box-info" v-if="viewEmotionPsico">
@@ -360,6 +431,71 @@ export default {
 
 .n-done:checked { 
     accent-color: #2BAF6B; 
-} 
+}
 
+.buttons{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#timeSelect {
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#chart-emotion-area-b {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
 </style>
