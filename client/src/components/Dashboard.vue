@@ -308,7 +308,7 @@ export default {
     
 <!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
 
-    <Teleport to="#chart-emotion-area-b">
+    <!-- <Teleport to="#chart-emotion-area-b"> -->
       <div class="timeModal" v-if="showtimeModal">
         <div class="modal-content">
           <span class="close" @click="closetimeModal">&times;</span>
@@ -322,7 +322,7 @@ export default {
           <button @click="handleTimeSelection">Aceptar</button>
         </div>
       </div>
-    </Teleport>
+    <!-- </Teleport> -->
 
   </div>
   

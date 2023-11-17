@@ -43,7 +43,7 @@ export default {
 
         <div id="box-user-info" v-if="collapsed_user">
           <div>{{ $props.code }}</div>
-          <div>{{ $props.nameReg }}</div>
+          <!-- <div>{{ $props.nameReg }}</div> -->
           <div>{{ $props.emailReg }}</div>
           <div>{{ $props.role }}</div>
         </div>
