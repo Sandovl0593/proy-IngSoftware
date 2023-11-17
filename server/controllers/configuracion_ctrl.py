@@ -15,7 +15,7 @@ def get_configuracion(tenant_id = 'UTEC')-> Optional[dict]:
         )
         for item in response['Items']:
             configuracion['main_graphic'] = item['main_graphic']['N']
-            configuracion['list'] = item['list']['N']
+            configuracion['lista'] = item['lista']['N']
             configuracion['face_graphic'] = item['face_graphic']['N']
 
         return {'content': configuracion}

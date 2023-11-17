@@ -28,9 +28,9 @@ def get_emotion_scores(tenant_id: str ='UTEC') -> Optional[dict]: ##
         return JSONResponse(content=e.response['Error'], status_code=500)
 
 
-def get_emotion_names() -> Optional[dict]: ##
+def get_emotion_names(tenant_id = 'UTEC') -> Optional[dict]: #falta tenant
     try:
-        data_emotions = get_emotion_scores()
+        data_emotions = get_emotion_scores(tenant_id)
         emotions = list(data_emotions.keys())
         return {'content': emotions}
     except ClientError as e:

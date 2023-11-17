@@ -3,6 +3,9 @@ from fastapi.responses import JSONResponse
 from datetime import datetime, timedelta
 from typing import Optional
 from database.db import dynamodb
+from controllers.configuracion_ctrl import get_configuracion
+from controllers.area_ctrl import get_areas
+from controllers.emotion_ctrl import get_emotion_predominant
 import json
 
 table = 't_graficos'
@@ -44,7 +47,7 @@ def get_data_main_graphic(dias: int = 1, emocion: str ='tristeza', area: str ='B
         fecha_limite_str = fecha_limite.strftime("%Y-%m-%dT%H:%M:%S")
 
         #Prueba
-        fechaLimite = str(fecha_limite_str) + '-alivio-Administracion y Finanzas' 
+        fechaLimite = str(fecha_limite_str) + '-aburrimiento-Administracion y Finanzas' 
 
         # Expresión de condición
         condition_expression = "tenant_id = :tenant_id AND fechaThora_emocion_area > :fechaLimite"
@@ -74,6 +77,61 @@ def get_data_main_graphic(dias: int = 1, emocion: str ='tristeza', area: str ='B
         return {'content': valores}
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
+
+
+def get_data_face_graphic(tenant_id = 'UTEC'):
+    try:
+        #Obtener emocion predominante
+        emocion = get_emotion_predominant()['content'][0] #FALTA agregar tenant_id
+        #Obtener dias predeterminados
+        dias =  int(get_configuracion(tenant_id)['content']['face_graphic'])
+        #Obtener la fecha 
+        ultimaFecha = get_last_date(tenant_id)['content'].split('T')[0]
+
+        fecha_limite = datetime.strptime(ultimaFecha[:19], "%Y-%m-%d")
+        fecha_limite -= timedelta(days=dias)
+
+        fecha_limite_str = fecha_limite.strftime("%Y-%m-%dT%H:%M:%S")
+
+        #Prueba
+        fechaLimite = str(fecha_limite_str) + '-aburrimiento-Administracion y Finanzas' 
+
+        # Expresión de condición
+        condition_expression = "tenant_id = :tenant_id AND fechaThora_emocion_area >= :fechaLimite"
+
+        # Atributos de expresión
+        expression_attribute_values = {
+            ':tenant_id': {'S': tenant_id},
+            ':fechaLimite': {'S': fechaLimite}
+        }
+
+        # Realizar la consulta
+        response = dynamodb.query(
+            TableName=table,
+            KeyConditionExpression=condition_expression,
+            ExpressionAttributeValues=expression_attribute_values
+        )
+        areas = get_areas(tenant_id)['content']
+        #Obtener emocion predominante
+        valores = {}
+        for area in areas:
+            valores[area] = 0
+
+        #crear diccionario de areas
+        for item in response['Items']:
+            fechaThora_emocion_area: str = item['fechaThora_emocion_area']['S']
+            temp = fechaThora_emocion_area.split('-')
+            area = str(temp[4])
+            if(temp[3] == emocion): 
+                count = int(item['count']['N'])
+                valores[area] += count
+    
+        return {'content': valores}
+        
+    except ClientError as e:
+        return JSONResponse(content=e.response['Error'], status_code=500)
+
+
 
 
 ''' 

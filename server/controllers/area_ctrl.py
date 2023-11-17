@@ -16,7 +16,6 @@ def get_areas(tenant_id: str = 'UTEC') -> Optional[dict]: ##
         for item in response['Items']:
             name: str = item['nombre']['S']
             areas.append(name)
-        print(areas)
         return {'content': areas}
     except ClientError as e:
         return JSONResponse(content=e.response['Error'], status_code=500)
