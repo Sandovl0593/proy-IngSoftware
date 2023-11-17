@@ -112,7 +112,7 @@ export default {
       //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
 
       // Obtiene la lista de emociones que maneja nuestra data :p
-      this.get('http://127.0.0.1:8000/emotion/all/names')
+      axios.get('http://127.0.0.1:8000/emotion/all/names')
       .then(res => {
         this.emotionNames = res.data.content;
       })
@@ -124,6 +124,7 @@ export default {
       await axios.get(`http://127.0.0.1:8000/graphic/face-graphic?tenant_id=${this.$props.tid}`)
       .then(res => {
         this.circularEmotion = res.data.content;
+        // this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       })
       .catch(error => {
         console.error('Error al obtener el dato:', error);
@@ -196,8 +197,6 @@ export default {
         console.error('Error al obtener el dato:', error);
         this.dominantEmotion = "enojo"   // por defecto si no esta activa
       });
-
-      this.updateChart();
     },
 
     async obtenerMiembrosNoAtendidos() {
