@@ -6,16 +6,9 @@ import Aggent from './Aggent.vue'
 import puntajes from '../utils/puntajes.json'
 import emotionAreas from '../utils/emotion_areas.json'
 
-//Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones
-import { BModal, BFormInput, BFormGroup } from 'bootstrap-vue';
-
 export default {
   name: "Dashboard",
-  components:{
-    'b-modal': BModal,
-    'b-form-input': BFormInput,
-    'b-form-group': BFormGroup,
-  },
+
   props: {
     nameReg: String,
     emailReg: String,
@@ -46,18 +39,13 @@ export default {
       serieAreas: [],
       countAreas: [],
       countData: [],
-      selectOption: null,
+      selectedOption: null,
       selectedTime: '1w',
-      timeOptions: [
-        {text: '1 hora', value: '1h'},
-        {text: '1 día', value: '1d'},
-        {text: '1 semana', value: '1w'},
-        {text: '1 mes', value: '1m'},
-      ],
+      showtimeModal: false,
 
       top_limit: 20,
      
-    }
+    };
   },
   async created() {
 
@@ -109,7 +97,7 @@ export default {
 
       this.serieAreas = Object.keys(this.circularEmotion);
       this.countAreas = Object.values(this.circularEmotion);
-      this.countData = Object.keys(this.dominantEmotion);
+      this.countData = Object.values(this.dominantEmotion);
 
       this.configPie = { 
         title: {
@@ -130,30 +118,6 @@ export default {
           type: 'gradient',
         },
         labels: this.serieAreas,
-        legend: {
-          show: false
-        }
-      };
-
-      this.configLine = { 
-        title: {
-          text: "Visualización de Data por rango seleccionado",
-          align: "center",
-        },
-        chart: {
-          width: '400px',
-          height: '400px',
-          zoom: {
-            enabled: true
-          },
-          offsetY: 10
-        },
-        // Cambiar los colores
-        colors: ['#d6c43e', '#cdcd32', '#d6a751'],
-        fill: {
-          type: 'gradient',
-        },
-        labels: this.serieData,
         legend: {
           show: false
         }
@@ -191,20 +155,21 @@ export default {
       }
     },
 
-    async selectOption(option){
-      this.selectOption = option;
+    selectOption(option){
+      this.selectedOption = option;
 
       if(option == 'timeRank'){
-        this.$refs.timeModal.show();
-        const selectedTime = await this.selectTime();
-        this.fetchDataForTime(selectedTime);}
-        else{
-          this.fetchData();
+        this.showtimeModal = true;}
+        else{this.fetchData();}
         }
       },
 
+      closetimeModal(){
+        this.showtimeModal = false;
+      },
+
       handleTimeSelection(){
-        this.$refs.timeModal.hide();
+        this.showtimeModal = false;
         this.fetchDataForTime(this.selectedTime);
       },
 
@@ -244,7 +209,6 @@ export default {
         }
       };
     },
-    },
 
     // funciones asincronas sibre actualizar el puntaje
     // en .then() ocurre si funciona la peticion POST
@@ -280,7 +244,7 @@ export default {
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     },
   };
-  components: { Aggent, Teleport, BModal, BFormInput, BFormGroup }
+  components: { Aggent, Teleport }
 
 </script>
 
@@ -337,13 +301,22 @@ export default {
     <div id="chart-emotion-area-b" class="box-info">
       <apexchart type="line" :options="configLine" :series="countData"></apexchart>
     </div>
-  
-    <b-modal ref="timeModal" title="Seleccione el intervalo de tiempo" @ok="handleTimeSelection">
-      <b-form-group label="Rango de Tiempo">
-        <b-form-select v-model="selectedTime" :options="timeOptions"></b-form-select>
-      </b-form-group>
-    </b-modal>
+    
+<!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
 
+    <div class="timeModal" v-show="showtimeModal">
+      <div class="modal-content">
+        <span class="close" @click="closetimeModal">&times;</span>
+        <label for="timeSelect">Rango de Tiempo:</label>
+        <select id="timeSelect" v-model="selectedtime">
+          <option value="1h">1 hora</option>
+          <option value="1w">1 semana</option>
+          <option value="2w">2 semanas</option>
+          <option value="1m">1 mes</option>
+        </select>
+        <button @click="handleTimeSelection">Aceptar</button>
+      </div>
+    </div>
   </div>
   
   <div id="feature-emotion-trend-b" class="box-info">
@@ -442,8 +415,67 @@ export default {
 
 .buttons{
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#timeSelect {
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#chart-emotion-area-b {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
 </style>
