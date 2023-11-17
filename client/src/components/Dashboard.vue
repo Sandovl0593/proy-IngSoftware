@@ -308,12 +308,12 @@ export default {
 <!-- Hice un modal para cuando seleccionen el rango de tiempo, algo así como lo de las notificaciones -->
 
     <Teleport to="#chart-emotion-area-b">
-      <div class="timeModal" v-show="showtimeModal">
+      <div class="timeModal" v-if="showtimeModal">
         <div class="modal-content">
           <span class="close" @click="closetimeModal">&times;</span>
           <label for="timeSelect">Rango de Tiempo:</label>
           <select id="timeSelect" v-model="selectedtime">
-            <option value="1h">1 hora</option>
+            <option value="1d">1 día</option>
             <option value="1w">1 semana</option>
             <option value="2w">2 semanas</option>
             <option value="1m">1 mes</option>
@@ -426,8 +426,7 @@ export default {
   margin-bottom: 20px;
 }
 
-/* .modal {
-  display: none;
+.timeModal{
   position: fixed;
   z-index: 1;
   left: 0;
@@ -435,8 +434,9 @@ export default {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-} */
+  background-color: rgba(0,0,0.5);
+}
+
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -478,7 +478,7 @@ export default {
 }
 
 .chart-buttons button:hover {
- opacity: 0.9;
+ opacity: 2.9;
 }
 
 </style>
