@@ -1,4 +1,6 @@
+import boto3
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 from fastapi.responses import JSONResponse
 from database.db import dynamodb
 from typing import Optional
@@ -58,16 +60,31 @@ def update_member_state_score(code: str, state: int, tenant_id = 'UTEC') -> Opti
         return JSONResponse(content=e.response["Error"], status_code=500)
 
 
-def get_members_top_negative(limit: int = 20) -> Optional[dict]: ##
+def actualizar_puntajes(tenant_id = 'UTEC'):
+    tabla = dynamodb.Table(table)
+    res = tabla.query(
+        ProjectionExpression='code, nombre, area, puntaje, correo, estado',
+        FilterExpression=(Key('tenant_id').eq(tenant_id))
+    )
+    miembros = res["Items"]
+    for miembro in miembros:
+        codigo = miembro.get('code', {}).get('S', '')
+        estado = int(miembro.get('estado', {}).get('N', '0'))
+        org = miembro.get('tenant_id', {}).get('S', '')
+        update_member_state_score(codigo, estado, org)
+    return {'mensaje': 'Puntajes actualizados'}
+
+
+def get_members_top_negative(tenant_id = 'UTEC', limit: int = 20) -> Optional[dict]: ##
     members: list = []
     
     try:
-        response: dict = dynamodb.scan(
+        response: dict = dynamodb.query(
             TableName=table,
             ProjectionExpression='code, nombre, area, puntaje, correo',
-            ExpressionAttributeNames={'#puntaje': 'puntaje'},
-            ExpressionAttributeValues={':val': {'N': '0'}},  
-            FilterExpression='#puntaje >= :val',
+            ExpressionAttributeNames={'#puntaje': 'puntaje', '#org': 'tenant_id'},
+            ExpressionAttributeValues={':val1': {'N': '0'}, ':val2': {'S': tenant_id}},
+            FilterExpression='(#puntaje >= :val1) AND (#org = :val2)'
         )
         
         items: dict = sorted(
@@ -97,17 +114,15 @@ def get_members_top_negative(limit: int = 20) -> Optional[dict]: ##
 
 
 # función para los nombres de los kmiembros (k < n = 20)
-def obtener_miembros_no_atendidos():
+def obtener_miembros_no_atendidos(tenant_id='UTEC'):
     nombres = []
-    response: dict = dynamodb.scan(
-        TableName=table,
+    tabla = dynamodb.Table(table)
+    res = tabla.query(
         ProjectionExpression='nombre, estado',
-        ExpressionAttributeNames={'#estado': 'estado'},
-        ExpressionAttributeValues={':val': {'N': '0'}},
-        FilterExpression='#estado == :val',
+        FilterExpression=(Key('estado').eq(0) & Key('tenant_id').eq(tenant_id)),
         Limit=20
     )
-    items = response['Items']
+    items = res['Items']
     for item in items:
         no_atendido: dict = {
             'nombre': item.get('nombre', {}).get('S', ''),
