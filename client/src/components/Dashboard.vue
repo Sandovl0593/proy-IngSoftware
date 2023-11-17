@@ -415,7 +415,7 @@ export default {
 
 .buttons{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
