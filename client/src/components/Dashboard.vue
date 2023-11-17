@@ -56,22 +56,13 @@ export default {
 
       exists_tenantId: true,
       
-      chartOptions: {
-        chart: {
-          id: "line-chart",
-        },
-        xaxis: {
-          categories: [], // lista para guardar los días que ponga
-        },
-      },
-      chartData: [
-        {
-          name: "Emotion/Area Data",
-          data: [],
-        },
-      ],
-      emotion: "defaultEmotion",
-      area: "defaultArea",
+      chartOptions: {},
+
+      chartData: [],
+      chartRangeDays: [],
+
+      emotion: "enojo",
+      area: "Bioingenieria",
       days: 7, // Por default será una semana
   
     
@@ -105,8 +96,16 @@ export default {
     // Obtener la emocion predominante
       this.getDominantEmotion();
       
+      let n = 0;
+      let arr_gen = Array(this.days).fill(0)
+      this.chartRangeDays = arr_gen.map(a => ++n);
 
-    this.obtenerMiembrosNoAtendidos();
+      await this.fetchData();
+
+      console.log(Object.values(this.chartRangeDays))
+
+
+      // this.obtenerMiembrosNoAtendidos();
 
       //// peticion post que retorne la configuracion
       //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
@@ -208,19 +207,26 @@ export default {
       }
     },
 
-    fetchData(){
-        const url = `http://127.0.0.1:8000/graphic/${this.emocion}/${this.area}/${this.dias}`;
-        axios
-        .get(url)
+    async fetchData(){
+        await axios.get(`http://127.0.0.1:8000/graphic/${this.emotion}/${this.area}/${this.days}?tenant_id=${this.$props.tid}`)
         .then((response) => {
-          const newData = response.data; // Ajusta esto según el formato real de tus datos
-          this.chartOptions.xaxis.area = newData.dates;
-          this.chartData[0].data = newData.values;
-        })
+          const newData = response.data.content; // Ajusta esto según el formato real de tus dato
+          this.chartData = Object.values(newData);
 
-        .catch((error) => {
+        }).catch((error) => {
           console.error("Error fetching data:", error);
         });
+
+        
+
+        this.chartOptions = await {
+          chart: {
+            id: "line-chart",
+          },
+          xaxis: {
+            categories: Object.values(this.chartRangeDays), // lista para guardar los días que ponga
+          },
+        }
 
     },
 
