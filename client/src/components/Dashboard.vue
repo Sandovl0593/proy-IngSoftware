@@ -38,7 +38,7 @@ export default {
       configPie: {},
       configLine: {},
 
-      circularEmotion: "",
+      circularEmotion: {},
       serieAreas: [],
       countAreas: [],
       countData: [],
@@ -69,26 +69,9 @@ export default {
       //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
 
 
-      // Obtener los miembros por puntaje en orden descendente
-      
-      // Obtener las coordenadas del grafico dependienedo de la emocion y el rango de tiempo
-      // axios.get(`http://127.0.0.1:8000/graphic/main/member_codes/${this.current_date}/${this.circularEmotion}/`)
-      // .then(res => {
-      //   this.mainGrafico = res.data;
-      // })
-      // .catch(error => {
-      //   console.error('Error al obtener el dato:', error);
-      // });
 
       // Obtener la emocion predominante
-      await axios.get('http://127.0.0.1:8000/emotion/predominant')
-      .then(res => {
-        this.dominantEmotion = res.data.content[0];
-      })
-      .catch(error => {
-        console.error('Error al obtener el dato:', error);
-        this.dominantEmotion = "enojo"   // por defecto si no esta activa
-      });
+      await this.getDominantEmotion();
 
       // Obtener la cantidad de personas con la emocion predominante por area
       await axios.get('http://127.0.0.1:8000/')
@@ -99,8 +82,6 @@ export default {
         console.error('Error al obtener el dato:', error);
         this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       });
-
-      await this.fetchData();
 
 
       this.serieAreas = Object.keys(this.circularEmotion);
@@ -148,29 +129,29 @@ export default {
       this.emailToCitar = infoUser.correo
     },
 
-    async fetchData(){
-      try{
-        const res = await axios.get('http://127.0.0.1:8000/emotion/predominant');
-        this.dominantEmotion = res.data;
+    async getDominantEmotion() {
+      await axios.get('http://127.0.0.1:8000/emotion/predominant')
+      .then(res => {
+        this.dominantEmotion = res.data.content[0];
         this.countData = Object.keys(this.dominantEmotion);
-        this.updateChart();
-      }
-      catch (error){
+        
+      })
+      .catch(error => {
         console.error('Error al obtener el dato:', error);
-        this.dominantEmotion = {default: 1};
-        this.countData = Object.keys(this.dominantEmotion);
-        this.updateChart();
-      }
+        this.dominantEmotion = "enojo"   // por defecto si no esta activa
+      });
+
+      this.updateChart();
     },
 
     selectOption(option){
       this.selectedOption = option;
 
-      if(option == 'timeRank'){
-        this.showtimeModal = true;}
-        else{this.fetchData();}
-        }
-      },
+      if(option == 'timeRank')
+        this.showtimeModal = true;
+      else
+          this.getDominantEmotion();
+    },
 
       closetimeModal(){
         this.showtimeModal = false;
@@ -187,13 +168,13 @@ export default {
           this.dominantEmotion = res.data;
           this.countData = Object.keys(this.dominantEmotion);
           this.updateChart();
-    } 
-    catch (error) {
-      console.error('Error al obtener el dato para el rango de tiempo:', error);
-    }
-  },
+        } 
+        catch (error) {
+          console.error('Error al obtener el dato para el rango de tiempo:', error);
+        }
+      },
 
-  updateChart() {
+    updateChart() {
       this.configLine = {
         title: {
           text: "Visualización de Data mediante Gráfico Lineal",
@@ -223,7 +204,7 @@ export default {
 
     async tounDoneCheck(index) {
       if (this.unDoneCheck[index]) {
-        await axxios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/1`).then(
+        await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/1`).then(
           res => {
             this.meanWhileCheck[index] = false;
             this.DoneCheck[index] = false;
@@ -237,7 +218,7 @@ export default {
     
     async toNeanwhileCheck(index) {
       if (this.meanWhileCheck[index]) {
-        await axxios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/2`).then(
+        await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/2`).then(
           res => {
             this.unDoneCheck[index] = false;
             this.DoneCheck[index] = false;
@@ -252,7 +233,7 @@ export default {
     
     async toDoneCheck(index) {
       if (this.DoneCheck[index]) {
-        await axxios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/3`).then(
+        await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/cambiar/3`).then(
           res => {
             this.unDoneCheck[index] = false;
             this.meanWhileCheck[index] = false;
@@ -262,9 +243,10 @@ export default {
       const codeuser = this.puntajeMembers[index-1].codigo
       await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/3/score`) //
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
-    },
-  };
+    }
+  },
   components: { Aggent, Teleport }
+}
 
 </script>
 
