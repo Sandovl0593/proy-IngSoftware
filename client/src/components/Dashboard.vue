@@ -76,7 +76,7 @@ export default {
   
     
     miembrosNoAtendidos: [],
-           
+     
     };
   },
   async created() {
@@ -112,7 +112,7 @@ export default {
       //// si existe informacion de X institucion en el tenant_id, se solicita al server la resp. informacion
 
       // Obtiene la lista de emociones que maneja nuestra data :p
-      await this.get('http://127.0.0.1:8000/emotion/all/names')
+      this.get('http://127.0.0.1:8000/emotion/all/names')
       .then(res => {
         this.emotionNames = res.data.content;
       })
@@ -121,7 +121,7 @@ export default {
       });
 
       // Obtener la cantidad de personas con la emocion predominante por area
-      axios.get(`http://127.0.0.1:8000/graphic/face-graphic?tenant_id=${this.$props.tid}`)
+      await axios.get(`http://127.0.0.1:8000/graphic/face-graphic?tenant_id=${this.$props.tid}`)
       .then(res => {
         this.circularEmotion = res.data.content;
       })
@@ -133,7 +133,6 @@ export default {
 
       this.serieAreas = Object.keys(this.circularEmotion);
       this.countAreas = Object.values(this.circularEmotion);
-      this.countData = Object.values(this.dominantEmotion);
 
       this.configPie = { 
         title: {
@@ -201,19 +200,14 @@ export default {
       this.updateChart();
     },
 
-    async updateConfiguracion() {
-      await axios.put(`http://127.0.0.1:8000/configuracion/${this.typeTochange}/${this.changed}`)
-      .then(res => {
-        this.loadConfiguracion();
-      })
-        .catch(error => {
-          console.error('Error al obtener en el cambio');
-        });
+    async obtenerMiembrosNoAtendidos() {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/obtener_miembros_no_atendidos');
+        this.miembrosNoAtendidos = response.data; // Actualiza la variable con la lista recibida del servidor
+      } catch (error) {
+        console.error('Error al obtener la lista de miembros no atendidos:', error);
+      }
     },
-
-    
-
-  
 
     fetchData(){
         const url = `http://127.0.0.1:8000/graphic/${this.emocion}/${this.area}/${this.dias}`;
@@ -245,7 +239,6 @@ export default {
       this.dias = newDays;
       this.fetchData();
     },
-
 
 
     // funciones asincronas sibre actualizar el puntaje
@@ -294,10 +287,7 @@ export default {
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     }
   },
-  mounted(){
-    this.fetchData();
-  },
-  components: { Aggent, Teleport }
+    components: { Aggent, Teleport }
 }
 
 </script>
