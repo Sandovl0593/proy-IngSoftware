@@ -63,6 +63,7 @@ export default {
       .catch(error => {
         console.error('Error al obtener el dato:', error);
         this.puntajeMembers = JSON.parse(JSON.stringify(puntajes)) // por defecto si no esta activa
+        console.log(this.puntajeMembers)
       });
     }
 
@@ -145,7 +146,7 @@ export default {
       this.updateChart();
     },
 
-    selectOption(option){
+    async selectOption(option){
       this.selectedOption = option;
 
       if(option == 'timeRank')
