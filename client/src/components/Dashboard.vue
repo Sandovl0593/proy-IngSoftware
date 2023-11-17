@@ -48,6 +48,8 @@ export default {
       // config main - psicologo
       selectedTime: '1w',
       top_limit: 20,
+
+      exists_tenantId: true
      
     };
   },
@@ -56,9 +58,9 @@ export default {
     this.viewEmotionPsico = this.$props.role.includes("psico") || this.$props.role.includes("main")
 
     if (this.viewEmotionPsico) {
-      await axios.get(`http://127.0.0.1:8000/member/all/top_negative/${this.top_limit}`)
+      axios.get(`http://127.0.0.1:8000/member/all/top_negative`)
       .then(res => {
-        this.puntajeMembers = res.data;
+        this.puntajeMembers = res.data.content;
       })
       .catch(error => {
         console.error('Error al obtener el dato:', error);
@@ -73,12 +75,12 @@ export default {
 
 
       // Obtener la emocion predominante
-      await this.getDominantEmotion();
+      this.getDominantEmotion();
 
       // Obtener la cantidad de personas con la emocion predominante por area
-      await axios.get('http://127.0.0.1:8000/')
+      await axios.get(`http://127.0.0.1:8000/graphic/face-graphic?tenant_id=${this.tid}`)
       .then(res => {
-        this.circularEmotion = res.data;
+        this.circularEmotion = res.data.content;
       })
       .catch(error => {
         console.error('Error al obtener el dato:', error);

@@ -3,7 +3,6 @@ import { RouterView } from 'vue-router';
 import Sidebar from './Sidebar.vue';
 import Dashboard from './Dashboard.vue';
 import SideUser from './SideUser.vue';
-import axios from 'axios';
 
 export default {
     name: "ViewLogged",
@@ -26,8 +25,8 @@ export default {
         // aqui se obtiene el nombre y correo de usuario
 
         // test
-        this.nameReg = "Adrian Sandoval Huamaní"
-        this.emailReg = "adrian.sandoval@utec.edu.pe"
+        this.nameReg = "Verónica Lunga"
+        this.emailReg = "verónica.lunga@utec.edu.pe"
         
     },
 
