@@ -3,22 +3,31 @@ import { RouterView } from 'vue-router';
 import Sidebar from './Sidebar.vue';
 import Dashboard from './Dashboard.vue';
 import SideUser from './SideUser.vue';
+import axios from 'axios';
 
 export default {
     name: "ViewLogged",
     data() {
         return {
+          code: "",  
           emailReg: "",
           role: "",
-          nameReg: ""
+          nameReg: "",
+          tenant_id: "",
         }
     },
     async created() {
         const params = this.$route.params
-        this.nameReg = params.name
-        this.emailReg = params.email
+
+        this.code = params.code
         this.role = params.role
         this.tenant_id = params.tid
+
+        // aqui se obtiene el nombre y correo de usuario
+
+        // test
+        this.nameReg = "Adrian Sandoval Huamaní"
+        this.emailReg = "adrian.sandoval@utec.edu.pe"
         
     },
 
@@ -34,13 +43,13 @@ export default {
 
 <template>
 
-    <Sidebar v-if="notWelcome" :nameReg="nameReg" :emailReg="emailReg"/>
+    <Sidebar v-if="notWelcome" :code="code" :role="role" :tid="tenant_id"/>
 
-    <Dashboard v-if="in_dashboard" :username="nameReg" :email="emailReg" :tid="tenant_id"/>
+    <Dashboard v-if="in_dashboard" :username="nameReg" :email="emailReg" :tid="tenant_id" :role="role"/>
     <router-view v-if="!in_dashboard"/>
 
     <SideUser v-if="notWelcome" :nameReg="nameReg" 
-                               :emailReg="emailReg" :role="role"/>
+                               :code="code" :role="role" :email="emailReg"/>
 
 
 </template>
