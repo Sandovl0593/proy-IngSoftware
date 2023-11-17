@@ -42,55 +42,8 @@ export default {
       serieAreas: [],
       countAreas: [],
       
-      chartOptions: {
-        chart: {
-          id: "line-chart",
-        },
-        xaxis: {
-          categories: ["Administracion y Finanzas",
-    "Administracion y negocios digitales",
-    "Asuntos Internacionales",
-    "Biblioteca",
-    "Bienestar Estudiantil",
-    "Bioingenieria",
-    "Ciencia de datos",
-    "Ciencia de la computacion",
-    "Ciencias",
-    "Comunicacion y Relaciones Publicas",
-    "Humanidades",
-    "Ingenieria ambiental",
-    "Ingenieria civil",
-    "Ingenieria de la energia",
-    "Ingenieria electronica",
-    "Ingenieria industrial",
-    "Ingenieria mecanica",
-    "Ingenieria mecatronica",
-    "Ingenieria quimica",
-    "Investigacion y Desarrollo",
-    "Legal y Cumplimiento",
-    "Mantenimiento y Operaciones",
-    "Recursos Humanos",
-    "Seguridad y Vigilancia",
-    "Servicios Estudiantiles",
-    "Servicios de Salud",
-    "Tecnologia de la Informacion (TI)"], //
-        },
-      },
-      chartData: [
-        {
-          name: "Emotion/Area Data",
-          data: [],
-        },
-      ],
-      emotion: "defaultEmotion",
-      area: "defaultArea",
-      days: 7, // Por default será una semana
-  
-    
-    miembrosNoAtendidos: [],
-      
-    top_limit: 20,
-     
+      miembrosNoAtendidos: [],      
+      top_limit: 20,     
     };
   },
   async created() {
@@ -138,7 +91,6 @@ export default {
 
       this.serieAreas = Object.keys(this.circularEmotion);
       this.countAreas = Object.values(this.circularEmotion);
-      this.countData = Object.values(this.dominantEmotion);
 
       this.configPie = { 
         title: {
@@ -211,47 +163,6 @@ export default {
         console.error('Error al obtener la lista de miembros no atendidos:', error);
       }
     }, 
-
-  
-
-    fetchData(){
-        const url = `http://127.0.0.1:8000/graphic/${this.emocion}/${this.area}/${this.dias}`;
-        axios
-        .get(url)
-        .then((response) => {
-          const newData = response.data;
-          this.chartOptions.xaxis.area = newData.dates;
-          this.chartData[0].data = newData.values;
-        })
-
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-
-    },
-
-    changeEmotion(newEmotion){
-      this.emocion = newEmotion;
-      this.fetchData();
-    },
-
-    changeArea(newArea){
-      this.area = newArea;
-      this.fetchData();
-    },
-
-    changeTime(newTime){
-      this.dias = newDays;
-      this.fetchData();
-    },
-  }, 
-
-  mounted(){
-    this.fetchData();
-  },
-
-
-
     // funciones asincronas sibre actualizar el puntaje
     // en .then() ocurre si funciona la peticion PUT
 
@@ -297,8 +208,8 @@ export default {
       await axios.put(`http://127.0.0.1:8000/member/${codeuser}/state/3/score`) //
       .then(res => this.puntajeMembers[index-1].puntaje -= 100) //
     }
-  };
-  components: { Aggent, Teleport }
+  },
+  components: { Aggent, Teleport}
 
 </script>
 
