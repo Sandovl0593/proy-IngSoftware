@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from database.db import dynamodb
 from typing import Optional
 from controllers.emotion_ctrl import get_emotion_predominant_member
+from controllers.configuracion_ctrl import get_configuracion
 
 table = 't_miembros'
 
@@ -75,25 +76,26 @@ def actualizar_puntajes(tenant_id = 'UTEC'):
     return {'mensaje': 'Puntajes actualizados'}
 
 
-def get_members_top_negative(tenant_id = 'UTEC', limit: int = 20) -> Optional[dict]: ##
-    members: list = []
+def get_members_top_negative(tenant_id = 'UTEC') -> Optional[dict]: ##
     
     try:
-        response: dict = dynamodb.query(
+        members: list = []
+        #obtener el limite 
+        limit =  int(get_configuracion(tenant_id)['content']['lista'])
+
+        response: dict = dynamodb.scan(
             TableName=table,
             ProjectionExpression='code, nombre, area, puntaje, correo',
             ExpressionAttributeNames={'#puntaje': 'puntaje', '#org': 'tenant_id'},
             ExpressionAttributeValues={':val1': {'N': '0'}, ':val2': {'S': tenant_id}},
             FilterExpression='(#puntaje >= :val1) AND (#org = :val2)'
         )
-        
         items: dict = sorted(
             response['Items'], 
             key=lambda x: int(x['puntaje']['N']), 
             reverse=True
         )[:limit]
         
-        print(items)
         for item in items:
             print(item)
             codigo = item.get('code', {}).get('S', '')
@@ -107,7 +109,6 @@ def get_members_top_negative(tenant_id = 'UTEC', limit: int = 20) -> Optional[di
                 'emocion_predominante': emocion_predominante['content']
             }
             members.append(member)
-        print(members)
         return {'content': members}
     except ClientError as e:
         return JSONResponse(content=e.response["Error"], status_code=500)

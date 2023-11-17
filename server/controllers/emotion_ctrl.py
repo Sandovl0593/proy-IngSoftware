@@ -53,12 +53,13 @@ def get_emotion_predominant(tenant_id: str = 'UTEC') -> Optional[dict]:  ##
 
 
 def get_emotion_predominant_member(member_code: str) -> Optional[dict]:  ##
-    from_date: str = datetime(2023, 8, 28).strftime('%Y-%m-%d')
+    from_date: str = datetime(2023, 8, 20).strftime('%Y-%m-%d') #MODIFICAR ESTO
     # end_date: str = datetime.now().strftime('%Y-%m-%d')
 
     try:
         items: dict = get_emotion_logs_member(member_code, from_date)
         emotions: list = [item['emocion']['S'] for item in items]
+        #print(emotions)
         emotion_counter: Counter = Counter(emotions)
         emotion_predominant: str = emotion_counter.most_common(1)[0][0]
         return {'content': emotion_predominant}
