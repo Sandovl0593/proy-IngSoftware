@@ -95,14 +95,6 @@ export default {
     
     // Obtener la emocion predominante
       this.getDominantEmotion();
-      
-      let n = 0;
-      let arr_gen = Array(this.days).fill(0)
-      this.chartRangeDays = arr_gen.map(a => ++n);
-
-      await this.fetchData();
-
-      console.log(Object.values(this.chartRangeDays))
 
 
       // this.obtenerMiembrosNoAtendidos();
@@ -129,6 +121,16 @@ export default {
         console.error('Error al obtener el dato:', error);
         this.circularEmotion = JSON.parse(JSON.stringify(emotionAreas)) // por defecto si no esta activa
       });
+
+      // let n = 0;
+      // let arr_gen = Array(this.days).fill(0)
+      // this.chartRangeDays = arr_gen.map(a => ++n);
+
+      await this.fetchData();
+      // console.log(Object.values(this.chartRangeDays))
+
+      this.chartRangeDays = [1, 2, 3, 4, 5, 6, 7]
+
 
 
       this.serieAreas = Object.keys(this.circularEmotion);
@@ -210,7 +212,7 @@ export default {
     async fetchData(){
         await axios.get(`http://127.0.0.1:8000/graphic/${this.emotion}/${this.area}/${this.days}?tenant_id=${this.$props.tid}`)
         .then((response) => {
-          const newData = response.data.content; // Ajusta esto según el formato real de tus dato
+          const newData = response.data.content;
           this.chartData = Object.values(newData);
 
         }).catch((error) => {
@@ -224,7 +226,7 @@ export default {
             id: "line-chart",
           },
           xaxis: {
-            categories: Object.values(this.chartRangeDays), // lista para guardar los días que ponga
+            categories: [1, 2, 3, 4, 5, 6, 7], // lista para guardar los días que ponga
           },
         }
 
