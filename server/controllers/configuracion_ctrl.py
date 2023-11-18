@@ -17,6 +17,8 @@ def get_configuracion(tenant_id = 'UTEC')-> Optional[dict]:
             configuracion['main_graphic'] = item['main_graphic']['N']
             configuracion['lista'] = item['lista']['N']
             configuracion['face_graphic'] = item['face_graphic']['N']
+            configuracion['lista_days'] = item['lista_days']['N']
+            configuracion['name'] = item['name']['S']
 
         return {'content': configuracion}
     except ClientError as e:
