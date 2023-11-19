@@ -69,3 +69,19 @@ def update_configuracion(tipo: str, new_value: int, tenant_id = 'UTEC') -> Optio
     except ClientError as e:
         return JSONResponse(content=e.response["Error"], status_code=500)    
 
+def get_lista_days(tenant_id = 'UTEC'):
+    configuracion: dict = {}
+    response: dict = dynamodb.scan(
+        TableName=table,
+        FilterExpression='tenant_id = :tenant_id',
+        ExpressionAttributeValues={':tenant_id': {'S': tenant_id}}
+    )
+    for item in response['Items']:
+        configuracion['main_graphic'] = item['main_graphic']['N']
+        configuracion['lista'] = item['lista']['N']
+        configuracion['face_graphic'] = item['face_graphic']['N']
+        configuracion['lista_days'] = item['lista_days']['N']
+        configuracion['name'] = item['name']['S']
+
+    return int (configuracion["lista_days"])
+

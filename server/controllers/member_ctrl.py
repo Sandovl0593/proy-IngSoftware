@@ -155,7 +155,7 @@ def modificar_estado(check: bool, code: str, tenant_id='UTEC'):
 
 
 def calculate_new_score(current_score: int, state: int) -> int:
-    return current_score - (20 if state == 1 else (50 if state == 2 else (100 if state == 3 else 0)))
+    return current_score - (5 if state == 1 else (10 if state == 2 else (20 if state == 3 else 0)))
 
 
 convert_response = lambda response: {
