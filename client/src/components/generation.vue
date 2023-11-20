@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/dist/qrcode.min.js"></script>
 </head>
 <body>
-<h1>Generador de QR</h1>
+<h1>Escanee QR</h1>
 
 <!-- Input para ingresar el texto del QR -->
 <label for="qr-text">Texto para el QR:</label>
@@ -16,6 +16,7 @@
 
 <!-- Botón para generar el QR -->
 <button onclick="generateQR()">Generar QR</button>
+<img>
 
 <!-- Contenedor donde se mostrará el QR -->
 <div id="qrcode"></div>
@@ -40,6 +41,7 @@
 <script>
     // Función para generar el QR
     function generateQR() {
+
         // Obtiene el texto ingresado
         var qrText = document.getElementById("qr-text").value;
 
@@ -51,10 +53,8 @@
             width: 128,
             height: 128
         }
-    </style>
-        });
+    });
     }
 </script>
 </body>
 </html>
-
