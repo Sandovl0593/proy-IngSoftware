@@ -1,0 +1,33 @@
+{
+    "tenant_id": {
+      "S": "UTEC"
+    },
+    "activity_id": {
+      "S": "AAA01"
+    },
+    "name": {
+        "S": "Respira y Relájate: Taller de manejo del estrés y técnicas de relajación"
+    },
+    "emotion": {
+        "S": "tristeza|estres|ansiedad"
+    },
+    "description": {
+        "S": "Descripción detallada de Respira y Relájate: Taller de manejo del estrés y técnicas de relajación"
+    },
+    "cant_person": {
+        "N": "17"
+    },
+    "duracion": {
+        "N": "60"
+    },
+    "min_person": {
+        "N": "8"
+    },
+    "tipo": {
+        "S": "Taller"
+    },
+    "calificacion": {
+        "N": "0"
+    }
+  }
+  

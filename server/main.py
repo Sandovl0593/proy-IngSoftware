@@ -7,6 +7,8 @@ from routes.emotion import routes_emotion
 from routes.member import routes_member
 from routes.area import routes_area
 from routes.configuracion import routes_configuracion
+from routes.activity import routes_activity
+from routes.recommendation import routes_recommendation
 from routes.login import routes_login
 from database.db import create_tables
 
@@ -28,4 +30,6 @@ app.include_router(routes_member, prefix="/member")
 app.include_router(routes_area, prefix="/area")
 app.include_router(routes_configuracion, prefix="/configuracion")
 app.include_router(routes_login, prefix="/user")
+app.include_router(routes_activity, prefix="/activity")
+app.include_router(routes_recommendation, prefix="/recommendation")
 #create_tables()

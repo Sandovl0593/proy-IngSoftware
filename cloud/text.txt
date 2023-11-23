@@ -161,3 +161,105 @@ def update(emotion_log: EmotionLog):
         'horas': ['11:00', '12:00']
     }
 ]
+
+
+
+
+
+-----------------------------
+
+
+import boto3
+import pandas as pd
+import random
+import numpy as np
+from io import StringIO
+
+# Conecta con DynamoDB
+dynamodb = boto3.resource('dynamodb')
+tabla = dynamodb.Table('t_registro_emociones')
+csv_count = 1
+
+def generar_lista_distribucion_normal(lista1, N):
+    if N <= 0:
+        return []
+    # Seleccionar elementos de lista1 de manera aleatoria
+    lista2 = random.sample(lista1, min(N, len(lista1)))
+
+    # Calcular la media y la desviación estándar para la distribución normal
+    media = len(lista2) / 2
+    desviacion_estandar = len(lista2) / 3
+
+    # Generar una distribución normal utilizando numpy
+    distribucion_normal = np.random.normal(media, desviacion_estandar, N - len(lista2))
+
+    # Redondear los valores y convertirlos a índices válidos para lista1
+    distribucion_normal_indices = [int(round(i)) % len(lista1) for i in distribucion_normal]
+
+    # Agregar los elementos de lista1 según la distribución normal
+    lista2.extend([lista1[i] for i in distribucion_normal_indices])
+
+    return lista2
+
+
+def get_data():
+    # Valor de la clave de partición que deseas consultar
+    clave_particion_valor = 'UTEC'
+
+    # Especifica las columnas que deseas recuperar
+    columnas_deseadas = ['code', 'emocion']
+
+    # Realiza la consulta con la condición de clave compuesta
+    response = tabla.query(
+        KeyConditionExpression='tenant_id = :valor_particion',
+        ExpressionAttributeValues={
+            ':valor_particion': clave_particion_valor
+        },
+        ProjectionExpression=", ".join(columnas_deseadas)
+    )
+    return response['Items']
+    
+def lambda_handler(event, context):
+    global csv_count
+    
+    data_dict = get_data()
+    df = pd.DataFrame(data_dict)
+    print(df)
+    
+    resultado = df.groupby('code')['emocion'].apply(lambda x: x.mode().iloc[0]).reset_index()
+    resultado.columns = ['USER_ID', 'MAIN_EMOTION']
+    edades = list(range(17, 30))
+    # Muestra el resultado
+    print(resultado)
+    
+    res3 = generar_lista_distribucion_normal(edades, 3784)
+    resultado['AGE'] = res3
+    
+    filtro = df['USER_ID'] == 
+    fila_filtrada = df.loc[filtro]
+    
+    print(resultado)
+    
+    if record_count >= 2:
+        print('>> last record added')
+        print(event)
+        write_to_csv()
+
+def write_to_csv():
+    # Guardar el DataFrame en un archivo CSV
+    csv_buffer = StringIO()
+    resultado.to_csv(csv_buffer, index=False)
+    
+    # Configurar el cliente de S3
+    s3 = boto3.client('s3')
+    
+    # Nombre del bucket y nombre del archivo en S3
+    bucket_name = 'feelscan-data-training'
+    file_key = f'member_{csv_count}.csv'
+    
+    # Subir el archivo CSV al bucket de S3
+    s3.put_object(Body=csv_buffer.getvalue(), Bucket=bucket_name, Key=file_key)
+    
+    # Imprimir mensaje de éxito
+    print(f"DataFrame guardado en {bucket_name}/{file_key}")
+    csv_count+=1

@@ -1,0 +1,67 @@
+ITEM_ID,NAME,EMOTION
+A0001,Respira y Relájate: Taller de manejo del estrés y técnicas de relajación,tristeza|estres|ansiedad
+A0002,Mindfulness para Estudiantes: Sesiones de meditación y atención plena,tristeza|estres|ansiedad
+A0003,Apoyo en Comunidad: Grupos de apoyo emocional y terapia grupal,tristeza|frustración
+A0004,Yoga para el Equilibrio Emocional: Clases de yoga y respiración consciente,tristeza|ansiedad|estres
+A0005,Inspiración Literaria: Lectura y visualización para elevar el ánimo,tristeza|aburrimiento
+A0006,Conexión Natural: Actividades al aire libre para conectar con la naturaleza,tristeza|estres|ansiedad
+A0007,Calma Interior: Talleres de manejo del estrés y técnicas de relajación,estres|ansiedad|frustración
+A0008,Apoyo y Conversación: Grupos de apoyo emocional y terapia grupal,estres|tristeza|ansiedad
+A0009,Cuerpo en Armonía: Ejercicios de relajación como yoga y tai chi,estres|ansiedad
+A0010,Say No and Relax: Establecimiento de límites y aprendizaje a decir no,estres|ansiedad
+A0011,Retiro de Relajación: Actividades relajantes como tomar un baño o leer,estres|ansiedad
+A0012,Meditación Guiada: Visualización y meditación para calmar la mente,estres|ansiedad
+A0013,Eliminadores de Ansiedad: Talleres para manejar la ansiedad y técnicas de relajación,ansiedad|estres
+A0014,Momentos Conscientes: Meditación y atención plena para reducir la ansiedad,ansiedad|estres
+A0015,Círculo de Confianza: Apoyo emocional y terapia personalizada,ansiedad|estres
+A0016,Yoga para la Ansiedad: Clases de yoga y ejercicios de respiración,ansiedad|estres
+A0017,Charlas de Corazón a Corazón: Conversación con amigos y profesionales para superar la ansiedad,ansiedad|estres
+A0018,Vivir Consciente: Práctica de la atención plena o mindfulness,ansiedad|estres
+A0019,Deporte Terapéutico: Ejercicio y deportes para liberar tensión,frustracion|enojo|aburrimiento
+A0020,Descanso con Respiración Profunda: Respiración profunda y contar hasta diez antes de reaccionar,frustracion|enojo|ansiedad
+A0021,Serenidad Sonora: Escucha de música tranquila o relajante,frustracion|enojo|ansiedad
+A0022,Relajación Muscular: Técnicas de relajación muscular,frustracion|enojo|ansiedad
+A0023,Viajes por el Diario: Escritura en un diario para expresar sentimientos,frustracion|enojo
+A0024,Odisea Cultural: Participación en eventos culturales y clubes estudiantiles,aburrimiento|estres
+A0025,Exploración de Pasatiempos: Exploración de nuevos pasatiempos y actividades extracurriculares,aburrimiento|estres
+A0026,UTEC Talks: Asistencia a conferencias y charlas sobre temas de interés,aburrimiento|motivacion|felicidad|satisfaccion
+A0027,Aventuras Creativas: Participación en proyectos de investigación o creativos,aburrimiento|motivacion|felicidad|satisfaccion
+A0028,Impacto en la Comunidad: Colaboración en proyectos comunitarios o voluntariado,aburrimiento|felicidad|satisfaccion
+A0029,Arena de Debate: Participación en clubes de debate o discusión,aburrimiento|motivacion
+A0030,Centro de Bienestar: Participación en eventos de bienestar y asesoramiento académico,preocupacion|estres|ansiedad
+A0031,Exploración de Carreras: Asistencia a charlas sobre planificación del futuro y opciones de carrera,preocupacion|motivacion|alivio
+A0032,Compañeros de Estudio: Participación en grupos de estudio y tutorías académicas,preocupacion|estres
+A0033,Discusión de Temas Relevantes: Participación en grupos de discusión sobre temas relevantes,preocupacion|motivacion|satisfaccion
+A0034,Visión de Liderazgo: Asistencia a eventos de desarrollo personal y liderazgo estudiantil,preocupacion|motivacion|satisfaccion
+A0035,Aventura de Orientación: Participación en actividades de orientación académica,preocupacion|estres
+A0036,Empoderamiento de Habilidades: Talleres de desarrollo de habilidades blandas,motivacion|felicidad
+A0037,Estación de Inspiración: Conferencias y charlas motivacionales,motivacion|tristeza|frustracion|felicidad
+A0038,Magia de Mentoría: Programas de mentoría entre estudiantes,motivacion|ansiedad|alivio
+A0039,Noche Cultural: Celebración de Tradiciones y Arte,aburrimiento|ansiedad|estres|enojo|felicidad
+A0040,Estableciendo Metas: Establecimiento de metas y objetivos claros,motivacion|preocupacion|alivio|felicidad|frustacion|ansiedad
+A0041,Actividades que Apasionan: Participación en actividades que apasionen e inspiren,motivacion|felicidad|aburrimiento
+A0042,Descubriendo Habilidades: Aprendizaje de nuevas habilidades o toma de cursos de interés,motivacion|felicidad|aburrimiento
+A0043,Conexiones Sociales: Participación en eventos sociales y actividades para conocer a otros estudiantes,felicidad|aburrimiento|motivacion
+A0044,"Noches de Juegos: Noches de juegos, fiestas temáticas y eventos culturales",felicidad|enojo|frustracion|tristeza|aburrimiento|estres
+A0045,Melodías en Desarrollo: Talleres de desarrollo de habilidades musicales,felicidad|motivacion|aburrimiento
+A0046,Cine Universitario: Noches de Películas en el Auditorio,felicidad|aburrimiento
+A0047,Expresión Artística: Exposiciones de arte y galerías,felicidad|motivacion|aburrimiento
+A0048,Foco en el Escenario: Representaciones teatrales y funciones de danza,felicidad|motivacion
+A0049,Alegría Deportiva: Participación en equipos y ligas deportivas,felicidad|motivacion|aburrimiento|alivio|tristeza
+A0050,Fusión Fitness: Participación en clases de fitness o deportes grupales,felicidad|motivacion|aburrimiento
+A0051,Encuentro Internacional: Conoce a Estudiantes de Intercambio,aburrimiento|motivacion|felicidad
+A0052,Excursión en el campo: Participación en excursiones o viajes de campo,felicidad|aburrimiento|motivacion
+A0053,Vibras de Karaoke: Noches de Karaoke con Amigos,felicidad|aburrimiento|motivacion
+A0054,Celebración de Ceremonias: Participación en ceremonias de reconocimiento estudiantil,satisfaccion|motivacion|felicidad
+A0055,Búsqueda de Servicio Comunitario: Involucramiento en proyectos de servicio comunitario impactantes,satisfaccion|felicidad|motivacion|aburrimiento
+A0056,Éxito Showtime: Organización de eventos para compartir logros y éxitos personales,satisfaccion|felicidad|motivacion
+A0057,Exhibición de Proyectos: Participación en exposiciones de proyectos y trabajos personales,satisfaccion|felicidad|motivacion
+A0058,Unidad de Voluntariado Comunitario: Unión a programas de voluntariado en la comunidad,satisfaccion|motivacion|felicidad
+A0059,Crecimiento Personal y Profesional: Asistencia a eventos de desarrollo personal y profesional,satisfaccion|motivacion|felicidad
+A0060,Yoga Sessions: Participación en sesiones de yoga restaurativo y relajación,alivio|estres|ansiedad
+A0061,Picnic en el Campus: Disfrute de picnics relajantes en el campus,alivio|estres|ansiedad|enojo
+A0062,Talleres de Alivio del Estrés: Asistencia a talleres de respiración y alivio del estrés,alivio|enojo|estres|ansiedad
+A0063,Deporte en Acción: Juegos en el Estadio Chipoco,aburrimiento|ansiedad|estres|enojo
+A0064,Estrategias Maestras: Torneos de Ajedrez Universitario,aburrimiento|ansiedad|estres|enojo
+A0065,Juegos de Mesa y Café: Tarde de Estrategia y Diversión,aburrimiento|ansiedad|estres|enojo
+A0066,Feria Gastronómica: Descubre Sabores de Todo el Mundo,aburrimiento|ansiedad|estres|enojo|felicidad

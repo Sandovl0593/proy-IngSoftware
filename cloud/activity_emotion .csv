@@ -1,0 +1,70 @@
+ITEM_ID,NAME,EMOTION,DESCRIPCION,CANT_PERSON,MIN_PERSON,DURACION,TIPO,CALIFICACION
+A0001,Respira y Relájate: Taller de manejo del estrés y técnicas de relajación,tristeza|estres|ansiedad,Explora técnicas efectivas para reducir el estrés y fomentar la relajación en el taller guiado por una psicóloga experta,40,20,90,Taller,0
+A0002,Mindfulness para Estudiantes: Sesiones de meditación y atención plena,tristeza|estres|ansiedad,Sesiones de meditación guiada y prácticas de atención plena para promover bienestar emocional y concentración académica,30,15,60,Meditacion,0
+A0003,Apoyo en Comunidad: Grupos de apoyo emocional y terapia grupal,tristeza|frustración,Brindar orientación psicológica a través de grupos de apoyo emocional y terapia grupal para fomentar el bienestar y la resiliencia.,12,8,45,Terapia grupal,0
+A0004,Yoga para el Equilibrio Emocional: Clases de yoga y respiración consciente,tristeza|ansiedad|estres,Se enfoca en técnicas de respiración consciente y posturas para promover bienestar mental y emocional,40,30,45,Yoga,0
+A0005,Inspiración Literaria: Lectura y visualización para elevar el ánimo,tristeza|aburrimiento, 
+La actividad de inspiración literaria combina la lectura y visualización creativa para elevar el ánimo. A través de textos evocadores y la imaginación, se busca estimular emociones positivas y fomentar la creatividad.,50,30,60,Literatura,0
+A0006,Conexión Natural: Actividades al aire libre para conectar con la naturaleza,tristeza|estres|ansiedad,La actividad "Conexión Natural" fomenta la interacción con la naturaleza mediante diversas actividades al aire libre. Busca fortalecer la conexión emocional y espiritual con el entorno natural, promoviendo bienestar.,60,40,50,Ecoturismo,0
+A0007,Calma Interior: Talleres de manejo del estrés y técnicas de relajación,estres|ansiedad|frustración,
+"Calma Interior" ofrece talleres que enseñan técnicas de manejo del estrés y relajación para cultivar la serenidad. Proporciona herramientas prácticas para mejorar el bienestar emocional y mental,80,60,50,Taller,0
+A0008,Apoyo y Conversación: Grupos de apoyo emocional y terapia grupal,estres|tristeza|ansiedad,"Apoyo y Conversación" brinda un espacio seguro mediante grupos de apoyo emocional y terapia grupal. Facilita la expresión libre de emociones, promoviendo el entendimiento y la sanación en comunidad.,40,25,45,Terapia grupal,0
+A0009,Cuerpo en Armonía: Ejercicios de relajación como yoga y tai chi,estres|ansiedad,
+"Cuerpo en Armonía" ofrece prácticas como yoga y tai chi para promover la relajación y equilibrio físico. Estas actividades buscan integrar mente y cuerpo, fomentando el bienestar integral.,40,30,45,Ejercicios de relajacion,0
+A0010,Say No and Relax: Establecimiento de límites y aprendizaje a decir no,estres|ansiedad,"Say No and Relax" se centra en establecer límites y desarrollar la habilidad de decir no. Proporciona herramientas para gestionar el estrés al priorizar el bienestar personal y mantener límites saludables.,45,30,60,Taller,0
+A0011,Retiro de Relajación: Actividades relajantes como tomar un baño o leer,estres|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0012,Meditación Guiada: Visualización y meditación para calmar la mente,estres|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0013,Eliminadores de Ansiedad: Talleres para manejar la ansiedad y técnicas de relajación,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0014,Momentos Conscientes: Meditación y atención plena para reducir la ansiedad,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0015,Círculo de Confianza: Apoyo emocional y terapia personalizada,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0016,Yoga para la Ansiedad: Clases de yoga y ejercicios de respiración,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0017,Charlas de Corazón a Corazón: Conversación con amigos y profesionales para superar la ansiedad,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0018,Vivir Consciente: Práctica de la atención plena o mindfulness,ansiedad|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0019,Deporte Terapéutico: Ejercicio y deportes para liberar tensión,frustracion|enojo|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0020,Descanso con Respiración Profunda: Respiración profunda y contar hasta diez antes de reaccionar,frustracion|enojo|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0021,Serenidad Sonora: Escucha de música tranquila o relajante,frustracion|enojo|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0022,Relajación Muscular: Técnicas de relajación muscular,frustracion|enojo|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0023,Viajes por el Diario: Escritura en un diario para expresar sentimientos,frustracion|enojo,lorem ipsun,0,0,0,lorem ipsun,0
+A0024,Odisea Cultural: Participación en eventos culturales y clubes estudiantiles,aburrimiento|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0025,Exploración de Pasatiempos: Exploración de nuevos pasatiempos y actividades extracurriculares,aburrimiento|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0026,UTEC Talks: Asistencia a conferencias y charlas sobre temas de interés,aburrimiento|motivacion|felicidad|satisfaccion,lorem ipsun,0,0,0,lorem ipsun,0
+A0027,Aventuras Creativas: Participación en proyectos de investigación o creativos,aburrimiento|motivacion|felicidad|satisfaccion,lorem ipsun,0,0,0,lorem ipsun,0
+A0028,Impacto en la Comunidad: Colaboración en proyectos comunitarios o voluntariado,aburrimiento|felicidad|satisfaccion,lorem ipsun,0,0,0,lorem ipsun,0
+A0029,Arena de Debate: Participación en clubes de debate o discusión,aburrimiento|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0030,Centro de Bienestar: Participación en eventos de bienestar y asesoramiento académico,preocupacion|estres|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0031,Exploración de Carreras: Asistencia a charlas sobre planificación del futuro y opciones de carrera,preocupacion|motivacion|alivio,lorem ipsun,0,0,0,lorem ipsun,0
+A0032,Compañeros de Estudio: Participación en grupos de estudio y tutorías académicas,preocupacion|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0033,Discusión de Temas Relevantes: Participación en grupos de discusión sobre temas relevantes,preocupacion|motivacion|satisfaccion,lorem ipsun,0,0,0,lorem ipsun,0
+A0034,Visión de Liderazgo: Asistencia a eventos de desarrollo personal y liderazgo estudiantil,preocupacion|motivacion|satisfaccion,lorem ipsun,0,0,0,lorem ipsun,0
+A0035,Aventura de Orientación: Participación en actividades de orientación académica,preocupacion|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0036,Empoderamiento de Habilidades: Talleres de desarrollo de habilidades blandas,motivacion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0037,Estación de Inspiración: Conferencias y charlas motivacionales,motivacion|tristeza|frustracion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0038,Magia de Mentoría: Programas de mentoría entre estudiantes,motivacion|ansiedad|alivio,lorem ipsun,0,0,0,lorem ipsun,0
+A0039,Noche Cultural: Celebración de Tradiciones y Arte,aburrimiento|ansiedad|estres|enojo|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0040,Estableciendo Metas: Establecimiento de metas y objetivos claros,motivacion|preocupacion|alivio|felicidad|frustacion|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0041,Actividades que Apasionan: Participación en actividades que apasionen e inspiren,motivacion|felicidad|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0042,Descubriendo Habilidades: Aprendizaje de nuevas habilidades o toma de cursos de interés,motivacion|felicidad|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0043,Conexiones Sociales: Participación en eventos sociales y actividades para conocer a otros estudiantes,felicidad|aburrimiento|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0044,Noches de Juegos: Noches de juegos, fiestas temáticas y eventos culturales,felicidad|enojo|frustracion|tristeza|aburrimiento|estres,lorem ipsun,0,0,0,lorem ipsun,0
+A0045,Melodías en Desarrollo: Talleres de desarrollo de habilidades musicales,felicidad|motivacion|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0046,Cine Universitario: Noches de Películas en el Auditorio,felicidad|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0047,Expresión Artística: Exposiciones de arte y galerías,felicidad|motivacion|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0048,Foco en el Escenario: Representaciones teatrales y funciones de danza,felicidad|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0049,Alegría Deportiva: Participación en equipos y ligas deportivas,felicidad|motivacion|aburrimiento|alivio|tristeza,lorem ipsun,0,0,0,lorem ipsun,0
+A0050,Fusión Fitness: Participación en clases de fitness o deportes grupales,felicidad|motivacion|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0051,Encuentro Internacional: Conoce a Estudiantes de Intercambio,aburrimiento|motivacion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0052,Excursión en el campo: Participación en excursiones o viajes de campo,felicidad|aburrimiento|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0053,Vibras de Karaoke: Noches de Karaoke con Amigos,felicidad|aburrimiento|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0054,Celebración de Ceremonias: Participación en ceremonias de reconocimiento estudiantil,satisfaccion|motivacion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0055,Búsqueda de Servicio Comunitario: Involucramiento en proyectos de servicio comunitario impactantes,satisfaccion|felicidad|motivacion|aburrimiento,lorem ipsun,0,0,0,lorem ipsun,0
+A0056,Éxito Showtime: Organización de eventos para compartir logros y éxitos personales,satisfaccion|felicidad|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0057,Exhibición de Proyectos: Participación en exposiciones de proyectos y trabajos personales,satisfaccion|felicidad|motivacion,lorem ipsun,0,0,0,lorem ipsun,0
+A0058,Unidad de Voluntariado Comunitario: Unión a programas de voluntariado en la comunidad,satisfaccion|motivacion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0059,Crecimiento Personal y Profesional: Asistencia a eventos de desarrollo personal y profesional,satisfaccion|motivacion|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
+A0060,Yoga Sessions: Participación en sesiones de yoga restaurativo y relajación,alivio|estres|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0061,Picnic en el Campus: Disfrute de picnics relajantes en el campus,alivio|estres|ansiedad|enojo,lorem ipsun,0,0,0,lorem ipsun,0
+A0062,Talleres de Alivio del Estrés: Asistencia a talleres de respiración y alivio del estrés,alivio|enojo|estres|ansiedad,lorem ipsun,0,0,0,lorem ipsun,0
+A0063,Deporte en Acción: Juegos en el Estadio Chipoco,aburrimiento|ansiedad|estres|enojo,lorem ipsun,0,0,0,lorem ipsun,0
+A0064,Estrategias Maestras: Torneos de Ajedrez Universitario,aburrimiento|ansiedad|estres|enojo,lorem ipsun,0,0,0,lorem ipsun,0
+A0065,Juegos de Mesa y Café: Tarde de Estrategia y Diversión,aburrimiento|ansiedad|estres|enojo,lorem ipsun,0,0,0,lorem ipsun,0
+A0066,Feria Gastronómica: Descubre Sabores de Todo el Mundo,aburrimiento|ansiedad|estres|enojo|felicidad,lorem ipsun,0,0,0,lorem ipsun,0
