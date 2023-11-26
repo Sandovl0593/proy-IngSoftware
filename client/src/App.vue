@@ -1,23 +1,25 @@
+<template>
+  <LineChart/>
+</template>
+
 <script>
-import ViewLogged from './components/ViewLogged.vue';
-import Login from './components/Login.vue';
+import LineChart from './components/LineChart.vue'
 
-export default {  
-  name: "App",
-  computed: {
-    in_login() {
-      return this.$route.path === '/login' || this.$route.path === '/';
-    }
-  },
-  components: { ViewLogged, Login }
+export default {
+  name: 'App',
+  components: {
+    LineChart
+  }
 }
-
 </script>
 
-<template>
- 
-  <Login v-if="in_login"/>
-
-  <ViewLogged v-if="!in_login"/>
-
-</template>
+<!-- <style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style> -->
